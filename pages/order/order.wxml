@@ -1,0 +1,118 @@
+<import src="../../template/standard_tip.wxml" />
+<view class="wrapper">
+
+  <!--<view class="banner-wrap {{scrollDown?'hidden':''}}">
+    <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="500">
+      <block wx:for="{{banners}}" wx:key="id">
+        <swiper-item>
+          <image bindtap="tapBanner" data-id="{{index}}" src="{{item.img}}" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>-->
+  <view class="notice-wrap"></view>
+  <view class="col-wrap" style="height:{{winHeight}}px">
+    <view class="left-col">
+      <scroll-view scroll-y="true">
+        <block wx:key="id" wx:for-items="{{list}}">
+          <view id="{{item.id}}" class="left-item{{item.selected ? '-selected' : '-disselected'}}" bindtap="onTapLeftItem">
+            <view class="left-item-block"></view>
+            <text class="left-item-title{{item.selected ? '-selected' : '-disselected'}}">{{item.name}}</text>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+    <view class="right-col">
+      <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" bindscroll="onGoodsScroll">
+        <block wx:key="id" wx:for-items="{{category.specials}}">
+          <view class="right-item">
+            <image class="case-img" src="../../image/{{item.img}}" mode="aspectFill"></image>
+            <view class="info-container">
+              <text class="case-name">{{item.name}}</text>
+              <text class="case-ordered">{{item.orders}}已点</text>
+              <text class="case-price">￥{{item.price}}.0</text>
+            </view>
+            <view class="button-wrap">
+              <block wx:if="{{item.standards.length == 0}}">
+                <image catchtap="onAddCase" data-index="{{index}}" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
+                <text class="order-nums {{item.orderNum == 0 ? 'hidden':''}}">{{item.orderNum}}</text>
+                <image catchtap="onRemoveCase" data-index="{{index}}" class="remove_btn {{item.orderNum == 0 ? 'hidden':''}}" src="../../icons/remove_icon.png" mode="aspectFit"></image>
+              </block>
+              <block wx:if="{{item.standards.length > 0}}">
+                <text class="choose-standard" bindtap="onTapChoose" data-index="{{index}}">选规格</text>
+                <text class="badge-nums {{item.orderAllNum == 0 ? 'hidden':''}}">{{item.orderAllNum}}</text>
+              </block>
+            </view>
+            <view class="h_line"></view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+  <view class="choose-tip-shadow {{isStandardTips?'':'hidden'}}" bindtap="onTapChooseShadow">
+    <view class="choose-panel" catchtap="onPreventTap">
+      <text class="case-name-tips">{{caseItem.name}}</text>
+      <view class="dismiss_wrapper" catchtap="onTapChooseShadow">
+        <image class="dismiss" src="../../icons/dismiss_icon.png"></image>
+      </view>
+      <view class="case-standard-tag-wrapper">
+        <block wx:key="id" wx:for-items="{{caseItem.standards}}">
+          <text class="standard-title">{{item.title}}</text>
+          <block wx:key="id" wx:for-index="rule_index" wx:for-item="rule" wx:for-items="{{item.rules}}">
+            <text data-row="{{index}}" data-index="{{rule_index}}" catchtap="onStandTagTap" class="case-standard-tag{{rule.isSelected?'-selected':''}}">{{rule.rule}}</text>
+          </block>
+        </block>
+      </view>
+      <view class="pannel-footer-wrapper">
+        <text class="case-price-tip">￥{{caseItem.price}}</text>
+        <text class="choosed-standard-tip">({{ruleChoose}})</text>
+        <view class="add-tip-wrapper">
+          <block wx:if="{{orderNum == null || orderNum == 0}}">
+            <text catchtap="onAddToTipCart" class="add-cart-tip">加入购物车</text>
+          </block>
+          <block wx:if="{{orderNum != null && orderNum != 0}}">
+            <image catchtap="onAddCaseNumTip" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
+            <text class="order-nums">{{orderNum}}</text>
+            <image catchtap="onRemoveCaseNumTip" class="remove_btn" src="../../icons/remove_icon.png" mode="aspectFit"></image>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view catchtap="onShowDetialOrders" style="height:{{winHeight+40}}px" class="mask {{isShowDetail ? '':'hidden'}}">
+    <scroll-view scroll-y="true" catchtap="onPreventTap">
+      <block wx:key="id" wx:for-items="{{totalOrders}}">
+        <view class="order-case-item">
+          <view class="order-title-wrapper">
+            <text class="order-title">· {{item.name}}</text>
+<block wx:if="{{item.properties != null}}">
+            <text class="order-properties">({{item.properties}})</text>
+            </block>
+          </view>
+          <text class="order-price">{{item.price*item.orderNum}}￥</text>
+          <view class="add-remove-wrapper">
+            <image data-index="{{index}}" catchtap="onAddCaseNumOrder" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
+            <text class="order-nums">{{item.orderNum}}</text>
+            <image data-index="{{index}}" catchtap="onRemoveCaseNumOrder" class="remove_btn" src="../../icons/remove_icon.png" mode="aspectFit"></image>
+          </view>
+          <view class="h_line"></view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!--<template is="standard_tip" data="{{isStandardTips}}"/>-->
+  <view class="footer-cart">
+    <view class="left-footer-cart-wrapper">
+      <view catchtap="onShowDetialOrders" class="cart-wrapper">
+        <image src="../../icons/cart_icon.png" mode="aspectFit"></image>
+        <text class="footer-cart-badge {{orderTotalNum == 0 ? 'hidden':''}}">{{ orderTotalNum }}
+        </text>
+      </view>
+      <text class="total_price">{{totalPrice}}￥</text>
+    </view>
+    <view class="right-footer-cart-wrapper" catchtap="onTapComplete">
+      <text class="complete">结算</text>
+    </view>
+  </view>
+</view>

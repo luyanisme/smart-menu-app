@@ -1,0 +1,54 @@
+<view class="wrapper">
+  <view catchtap="onTapChoose" class="ordered-wrapper">
+    <text class="ordered">已点</text>
+    <text class="badge {{totalOrders.length==0?'':'show'}}">{{totalOrders.length}}</text>
+  </view>
+  <view class="desktop-num-wrapper">
+    <text class="desktop-num-is">您的桌号为</text>
+    <text class="desktop-num">06号</text>
+  </view>
+  <view class="h-line"></view>
+  <view class="content-wrapper">
+    <view class="avater-wrapper">
+      <view class="avater-name-wrapper">
+        <image class="avater" src="{{userInfo.avatarUrl}}" mode="aspectFit"></image>
+        <text>{{userInfo.nickName}}</text>
+      </view>
+      <view animation="{{animation}}" class="avater-name-wrapper">
+        <image class="avater" src="../../icons/character_icon.png" mode="aspectFit"></image>
+        <text></text>
+      </view>
+    </view>
+  </view>
+  <view class="h-line"></view>
+  <button catchtap="onTapContinueOrder" class="continue-order">继续点餐</button>
+
+  <view class="choose-tip-shadow {{isStandardTips?'':'hidden'}}" bindtap="onTapChooseShadow">
+  <view class="orders-container">
+  <scroll-view scroll-y="true" catchtap="onPreventTap">
+      <block wx:key="id" wx:for-items="{{totalOrders}}">
+        <view class="order-case-item">
+          <view class="order-title-wrapper">
+            <text class="order-title">· {{item.name}}</text>
+<block wx:if="{{item.properties != null}}">
+            <text class="order-properties">({{item.properties}})</text>
+            </block>
+          </view>
+          <text class="order-price">{{item.price*item.orderNum}}￥</text>
+          <text class="oerder-num">×{{item.orderNum}}</text>
+          <!--<view class="add-remove-wrapper">
+            <image data-index="{{index}}" catchtap="onAddCaseNumOrder" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
+            <text class="order-nums">{{item.orderNum}}</text>
+            <image data-index="{{index}}" catchtap="onRemoveCaseNumOrder" class="remove_btn" src="../../icons/remove_icon.png" mode="aspectFit"></image>
+          </view>-->
+          <view class="h_line"></view>
+        </view>
+      </block>
+    </scroll-view>
+    <view class="h_line_dash"></view>
+    <view class="totalPrice">
+    <text>共计:{{totalPrice}}￥</text>
+    </view>
+  </view>
+  </view>
+</view>

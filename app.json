@@ -1,0 +1,16 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/order/order",
+    "pages/waiting/waiting",
+    "pages/menu/menu",
+    "pages/case/case",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#4F4C4C",
+
+    "navigationBarTextStyle":"#ffffff"
+  }
+}

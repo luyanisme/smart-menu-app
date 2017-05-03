@@ -1,0 +1,17 @@
+<view class="wrapper">
+<scroll-view style="height: {{winHeight}}px" scroll-y="true">
+  <view class="case-wrapper">
+  <block wx:for="{{cases}}" wx:key="id">
+    <view class="case-item-wrapper">
+      <view class="case-item">
+        <image class="case-img" src="http://127.0.0.1:8080/{{item.caseImagePath}}" mode="aspectFill"></image>
+        <view class="info-wrapper">
+        <text class="info-title">{{item.caseName}}</text>
+        <text class="info-price">￥{{item.casePrice}}</text>
+        </view>
+      </view>
+    </view>
+    </block>
+  </view>
+  </scroll-view>
+</view>
