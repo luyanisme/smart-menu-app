@@ -14,23 +14,23 @@
   <view class="col-wrap" style="height:{{winHeight}}px">
     <view class="left-col">
       <scroll-view scroll-y="true">
-        <block wx:key="id" wx:for-items="{{list}}">
-          <view id="{{item.id}}" class="left-item{{item.selected ? '-selected' : '-disselected'}}" bindtap="onTapLeftItem">
+        <block wx:key="caseTypeId" wx:for-items="{{list}}">
+          <view id="{{item.caseTypeId}}" class="left-item{{item.selected ? '-selected' : '-disselected'}}" bindtap="onTapLeftItem">
             <view class="left-item-block"></view>
-            <text class="left-item-title{{item.selected ? '-selected' : '-disselected'}}">{{item.name}}</text>
+            <text class="left-item-title{{item.selected ? '-selected' : '-disselected'}}">{{item.caseTypeName}}</text>
           </view>
         </block>
       </scroll-view>
     </view>
     <view class="right-col">
       <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" bindscroll="onGoodsScroll">
-        <block wx:key="id" wx:for-items="{{category.specials}}">
+        <block wx:key="caseId" wx:for-items="{{category.cases}}">
           <view class="right-item">
-            <image class="case-img" src="../../image/{{item.img}}" mode="aspectFill"></image>
+            <image class="case-img" src="http://127.0.0.1:8080/{{item.caseImagePath}}" mode="aspectFill"></image>
             <view class="info-container">
-              <text class="case-name">{{item.name}}</text>
+              <text class="case-name">{{item.caseName}}</text>
               <text class="case-ordered">{{item.orders}}已点</text>
-              <text class="case-price">￥{{item.price}}.0</text>
+              <text class="case-price">￥{{item.casePrice}}.0</text>
             </view>
             <view class="button-wrap">
               <block wx:if="{{item.standards.length == 0}}">
@@ -51,20 +51,20 @@
   </view>
   <view class="choose-tip-shadow {{isStandardTips?'':'hidden'}}" bindtap="onTapChooseShadow">
     <view class="choose-panel" catchtap="onPreventTap">
-      <text class="case-name-tips">{{caseItem.name}}</text>
+      <text class="case-name-tips">{{caseItem.caseName}}</text>
       <view class="dismiss_wrapper" catchtap="onTapChooseShadow">
         <image class="dismiss" src="../../icons/dismiss_icon.png"></image>
       </view>
       <view class="case-standard-tag-wrapper">
-        <block wx:key="id" wx:for-items="{{caseItem.standards}}">
-          <text class="standard-title">{{item.title}}</text>
-          <block wx:key="id" wx:for-index="rule_index" wx:for-item="rule" wx:for-items="{{item.rules}}">
-            <text data-row="{{index}}" data-index="{{rule_index}}" catchtap="onStandTagTap" class="case-standard-tag{{rule.isSelected?'-selected':''}}">{{rule.rule}}</text>
+        <block wx:key="id"  wx:for-items="{{caseItem.standards}}">
+          <text class="standard-title">{{item[0].ruleName}}</text>
+          <block wx:key="id" wx:for-index="rule_index" wx:for-item="rule" wx:for-items="{{item}}">
+            <text data-row="{{index}}" data-index="{{rule_index}}" catchtap="onStandTagTap" class="case-standard-tag{{rule.isSelected?'-selected':''}}">{{rule.value}}</text>
           </block>
         </block>
       </view>
       <view class="pannel-footer-wrapper">
-        <text class="case-price-tip">￥{{caseItem.price}}</text>
+        <text class="case-price-tip">￥{{caseItem.casePrice}}</text>
         <text class="choosed-standard-tip">({{ruleChoose}})</text>
         <view class="add-tip-wrapper">
           <block wx:if="{{orderNum == null || orderNum == 0}}">
@@ -84,12 +84,12 @@
       <block wx:key="id" wx:for-items="{{totalOrders}}">
         <view class="order-case-item">
           <view class="order-title-wrapper">
-            <text class="order-title">· {{item.name}}</text>
+            <text class="order-title">· {{item.caseName}}</text>
 <block wx:if="{{item.properties != null}}">
             <text class="order-properties">({{item.properties}})</text>
             </block>
           </view>
-          <text class="order-price">{{item.price*item.orderNum}}￥</text>
+          <text class="order-price">{{item.casePrice*item.orderNum}}￥</text>
           <view class="add-remove-wrapper">
             <image data-index="{{index}}" catchtap="onAddCaseNumOrder" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
             <text class="order-nums">{{item.orderNum}}</text>

@@ -190,8 +190,6 @@ var categories = [{
 Page({
 
 	data: {
-		list: categories,
-		category: categories[row],
 		// banners:banners,
 		winHeight: screen.getScreenSize().height - 40 - 50,
 		orderTotalNum: totalOrderNums,
@@ -203,6 +201,27 @@ Page({
 		totalOrderNums = 0;
 		totalPrice = 0;
 		var page = this;
+    wx.request({
+      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMenu?shopId=1',//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      data: {},
+      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
+      // header: {}, // 设置请求的 header  
+      success: function (res) {
+        
+        app.globalData.categories = res.data;
+        app.globalData.categories[0].selected = true;
+        page.setData({
+          list: app.globalData.categories,
+          category: app.globalData.categories[row],
+        });
+      },
+      fail: function () {
+        // fail  
+      },
+      complete: function () {
+        // complete  
+      }
+    })
 		// wx.getStorage({
 		// 	key: 'data',
 		// 	success: function (res) {
@@ -249,11 +268,11 @@ Page({
 	onTapLeftItem: function (e) {
 		var id = e.currentTarget.id,
 			list = this.data.list;
-		if (id == categories[row].id) {
+    if (id == categories[row].caseTypeId) {
 			return;
 		}
 		for (var i = 0, len = list.length; i < len; ++i) {
-			if (list[i].id == id) {
+      if (list[i].caseTypeId == id) {
 				list[i].selected = !list[i].selected;
 				row = i;
 			} else {
@@ -290,8 +309,8 @@ Page({
 
 	onTapChoose: function (e) {
 		index = e.target.dataset.index;
-		var caseItem = this.data.list[row].specials[index];
-		originalPrice = caseItem.price;
+		var caseItem = this.data.list[row].cases[index];
+    originalPrice = caseItem.casePrice;
 		caseItem.row = row;
 		caseItem.index = index;
 		var ruleChoose = "";
@@ -302,21 +321,21 @@ Page({
 			caseItem = orderCaseItem;
 			caseItem.orderAllNum = orderAllNum;
 			for (var i = 0; i < caseItem.standards.length; i++) {
-				for (var j = 0; j < caseItem.standards[i].rules.length; j++) {
-					if (caseItem.standards[i].rules[j].isSelected) {
-						ruleChoose += caseItem.standards[i].rules[j].rule + "+";
+				for (var j = 0; j < caseItem.standards[i].length; j++) {
+					if (caseItem.standards[i][j].isSelected) {
+						ruleChoose += caseItem.standards[i][j].value + "+";
 					}
 				}
 			}
 		} else {
 			caseItem.orderNum = 0;
 			for (var i = 0; i < caseItem.standards.length; i++) {
-				for (var j = 0; j < caseItem.standards[i].rules.length; j++) {
+				for (var j = 0; j < caseItem.standards[i].length; j++) {
 					if (j == 0) {
-						caseItem.standards[i].rules[j].isSelected = true;
-						ruleChoose += caseItem.standards[i].rules[j].rule + "+"
+						caseItem.standards[i][j].isSelected = true;
+						ruleChoose += caseItem.standards[i][j].value + "+"
 					} else {
-						caseItem.standards[i].rules[j].isSelected = false;
+						caseItem.standards[i][j].isSelected = false;
 					}
 				}
 			}
@@ -340,7 +359,7 @@ Page({
 
 	onTapChooseShadow: function (e) {
 		if (this.data.isStandardTips) {
-			this.data.list[row].specials[index] = this.data.caseItem;
+      this.data.list[row].cases[index] = this.data.caseItem;
 			this.setData({
 				isStandardTips: false
 			});
@@ -360,27 +379,27 @@ Page({
 		var tagRow = e.target.dataset.row;
 		var ruleChoose = "";
 
-		for (var i = 0; i < this.data.caseItem.standards[tagRow].rules.length; i++) {
-			this.data.caseItem.standards[tagRow].rules[i].isSelected = false;
+		for (var i = 0; i < this.data.caseItem.standards[tagRow].length; i++) {
+			this.data.caseItem.standards[tagRow][i].isSelected = false;
 		}
-		this.data.caseItem.standards[tagRow].rules[tagIndex].isSelected = true;
+		this.data.caseItem.standards[tagRow][tagIndex].isSelected = true;
 
 		for (var i = 0; i < this.data.caseItem.standards.length; i++) {
-			for (var j = 0; j < this.data.caseItem.standards[i].rules.length; j++) {
-				if (this.data.caseItem.standards[i].rules[j].isSelected) {
-					ruleChoose += this.data.caseItem.standards[i].rules[j].rule + "+";
-					if (this.data.caseItem.standards[i].rules[j].price != null) {
-						this.data.caseItem.price = this.data.caseItem.standards[i].rules[j].price;
+			for (var j = 0; j < this.data.caseItem.standards[i].length; j++) {
+				if (this.data.caseItem.standards[i][j].isSelected) {
+					ruleChoose += this.data.caseItem.standards[i][j].value + "+";
+          if (this.data.caseItem.standards[i][j].casePrice != null) {
+            this.data.caseItem.casePrice = this.data.caseItem.standards[i][j].casePrice;
 					}
 				}
 			}
 		}
 		ruleChoose = ruleChoose.slice(0, ruleChoose.length - 1);
-		var caseItem = this.ArrayFindSameProperty(totalOrders, ruleChoose, this.data.caseItem.id);
+    var caseItem = this.ArrayFindSameProperty(totalOrders, ruleChoose, this.data.caseItem.caseId);
 		if (caseItem == null) {
 			this.data.caseItem.orderNum = 0;
 		} else {
-			if (caseItem.id != this.data.caseItem.id) {
+      if (caseItem.caseId != this.data.caseItem.caseId) {
 				this.data.caseItem.orderNum = 0;
 			} else {
 				this.data.caseItem.orderNum = caseItem.orderNum;
@@ -401,11 +420,11 @@ Page({
 		caseItem.orderNum = num;
 		++caseItem.orderAllNum;
 		++totalOrderNums;
-		totalPrice += caseItem.price;
+    totalPrice += caseItem.casePrice;
 		caseItem.properties = this.data.ruleChoose;
 		totalOrders.push(JSON.parse(JSON.stringify(caseItem)));
-		caseItem.price = originalPrice;
-		this.data.category.specials[index] = caseItem;
+    caseItem.casePrice = originalPrice;
+    this.data.category.cases[index] = caseItem;
 		this.setData({
 			orderNum: caseItem.orderNum,
 			category: this.data.category,
@@ -415,12 +434,12 @@ Page({
 	},
 
 	onAddCaseNumTip: function (e) {
-		var caseItem = this.ArrayFindSameProperty(totalOrders, this.data.ruleChoose, this.data.caseItem.id);
+    var caseItem = this.ArrayFindSameProperty(totalOrders, this.data.ruleChoose, this.data.caseItem.caseId);
 		++caseItem.orderNum;
 		++totalOrderNums;
-		totalPrice += caseItem.price;
+    totalPrice += caseItem.casePrice;
 		++this.data.caseItem.orderAllNum;
-		this.data.category.specials[index] = this.data.caseItem;
+    this.data.category.cases[index] = this.data.caseItem;
 		this.setData({
 			orderNum: caseItem.orderNum,
 			category: this.data.category,
@@ -430,13 +449,13 @@ Page({
 	},
 
 	onRemoveCaseNumTip: function (e) {
-		var caseItem = this.ArrayFindSameProperty(totalOrders, this.data.ruleChoose, this.data.caseItem.id);
+    var caseItem = this.ArrayFindSameProperty(totalOrders, this.data.ruleChoose, this.data.caseItem.caseId);
 		--caseItem.orderNum;
 		--totalOrderNums;
-		totalPrice -= caseItem.price;
+    totalPrice -= caseItem.casePrice;
 		--this.data.caseItem.orderAllNum;
 		var ruleChoose = "";
-		this.data.category.specials[index] = this.data.caseItem;
+    this.data.category.cases[index] = this.data.caseItem;
 
 		if (caseItem.orderNum == 0) {
 			this.ArrayRemove(totalOrders, caseItem);
@@ -461,7 +480,7 @@ Page({
 
 	onAddCase: function (e) {
 		index = e.target.dataset.index;
-		var caseItem = this.data.list[row].specials[index];
+    var caseItem = this.data.list[row].cases[index];
 		caseItem.row = row;
 		caseItem.index = index;
 		if (caseItem.orderNum == null) {
@@ -469,7 +488,7 @@ Page({
 		}
 		++caseItem.orderNum;
 		++totalOrderNums;
-		totalPrice += caseItem.price;
+    totalPrice += caseItem.casePrice;
 		if (this.ArrayContain(totalOrders, caseItem) == false) {
 			totalOrders.push(JSON.parse(JSON.stringify(caseItem)));
 		} else {
@@ -485,10 +504,10 @@ Page({
 
 	onRemoveCase: function (e) {
 		index = e.target.dataset.index;
-		var caseItem = this.data.list[row].specials[index];
+    var caseItem = this.data.list[row].cases[index];
 		--caseItem.orderNum;
 		--totalOrderNums;
-		totalPrice -= caseItem.price;
+    totalPrice -= caseItem.casePrice;
 		this.ArrayFindId(totalOrders, caseItem).orderNum--;
 		if (caseItem.orderNum == 0) {
 			this.ArrayRemove(totalOrders, caseItem);
@@ -523,7 +542,7 @@ Page({
 	onAddCaseNumOrder: function (e) {
 		var index = e.target.dataset.index;
 		var orderCateItem = totalOrders[index];
-		var cateItem = this.data.list[orderCateItem.row].specials[orderCateItem.index];
+    var cateItem = this.data.list[orderCateItem.row].cases[orderCateItem.index];
 		if (cateItem.orderAllNum > 0) {
 			++cateItem.orderAllNum;
 			++orderCateItem.orderNum;
@@ -533,7 +552,7 @@ Page({
 		}
 
 		++totalOrderNums;
-		totalPrice += orderCateItem.price;
+    totalPrice += orderCateItem.casePrice;
 		this.setData({
 			category: this.data.list[row],
 			totalOrders: totalOrders,
@@ -545,7 +564,7 @@ Page({
 	onRemoveCaseNumOrder: function (e) {
 		var index = e.target.dataset.index;
 		var orderCateItem = totalOrders[index];
-		var cateItem = this.data.list[orderCateItem.row].specials[orderCateItem.index];
+    var cateItem = this.data.list[orderCateItem.row].cases[orderCateItem.index];
 		if (cateItem.orderAllNum > 0) {
 			--cateItem.orderAllNum;
 			--orderCateItem.orderNum;
@@ -561,7 +580,7 @@ Page({
 		}
 
 		totalOrderNums--;
-		totalPrice -= orderCateItem.price;
+    totalPrice -= orderCateItem.casePrice;
 		if (totalOrderNums == 0) {
 			isShowDetail = false;
 			this.setData({
@@ -592,7 +611,7 @@ Page({
 	ArrayRemove: function (array, val) {
 		var index = -1;
 		for (var i = 0; i < array.length; i++) {
-			if (array[i].id == val.id) {
+      if (array[i].caseId == val.caseId) {
 				index = i;
 			}
 		}
@@ -605,7 +624,7 @@ Page({
 	ArrayContain: function (array, val) {
 		var index = -1;
 		for (var i = 0; i < array.length; i++) {
-			if (array[i].id == val.id) {
+      if (array[i].caseId == val.caseId) {
 				index = i;
 			}
 		}
@@ -620,7 +639,7 @@ Page({
 	ArrayFindId: function (array, val) {
 		var index = -1;
 		for (var i = 0; i < array.length; i++) {
-			if (array[i].id == val.id) {
+      if (array[i].caseId == val.caseId) {
 				index = i;
 			}
 		}
@@ -649,10 +668,10 @@ Page({
 		}
 	},
 
-	ArrayFindSameProperty: function (array, val, id) {
+  ArrayFindSameProperty: function (array, val, caseId) {
 		var index = -1;
 		for (var i = 0; i < array.length; i++) {
-			if (array[i].id == id) {
+      if (array[i].caseId == caseId) {
 				if (array[i].properties == val) {
 					index = i;
 				}

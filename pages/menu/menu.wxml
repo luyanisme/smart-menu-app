@@ -1,13 +1,19 @@
+<import src="../../template/helperPanel.wxml" />
 <view class="wrapper">
 <scroll-view style="height: {{winHeight}}px" scroll-y="true">
   <view class="banner-wrap">
     <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="500">
       <block wx:for="{{banners}}" wx:key="id">
         <swiper-item>
-          <image catchtap="tapBanner" data-id="{{index}}" src="{{item.img}}"/>
+          <image catchtap="tapBanner" data-id="{{index}}" src="http://127.0.0.1:8080/{{item.caseImagePath}}"/>
         </swiper-item>
       </block>
     </swiper>
+    <image catchtap="onTapCall" class="call-btn" src="../../icons/call_icon.png" mode="aspectFit"></image>
+    <view catchtap="onTapOrder" class="order-btn">
+    <image src="../../icons/order_icon.png" mode="aspectFit"></image>
+    <text class="order-num">11</text>
+    </view>
   </view>
   <view class="cate-wrapper">
     <block wx:for-items="{{categories}}" wx:key="id">
@@ -21,7 +27,6 @@
         <view class="v_right_line"></view>
       </view>
     </block>
-    
   </view>
 </scroll-view>
 </view>

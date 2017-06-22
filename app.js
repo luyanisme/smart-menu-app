@@ -186,6 +186,7 @@ App({
     userInfo: null,
     orders: [],
     totalPrice: 0,
-    categories:categories,
+    categories:[],
+		server:'127.0.0.1:'
   }
 })
