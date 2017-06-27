@@ -2,169 +2,10 @@ var app = getApp();
 var screen = require('../../utils/screenUtil.js')
 var row = 0;
 var index = 0;
-var totalOrders = [];//点单内容
-var totalOrderNums = 0;
+var totalOrders = [];//点单内容 
 var totalPrice = 0;//点单总价
 var isShowDetail = false;//是否展示订单详情
 var originalPrice = 0;//初始价格，用来储存多规格case
-var categories = [{
-	id: 1,
-	name: '特色菜',
-	selected: true,
-	specials: [{
-		id: 111,
-		name: '红烧河豚',
-		price: 123,
-		img: 'hetun.jpg',
-		orders: 1234,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: [{
-			id: 1,
-			title: '规格',
-			rules: [{
-				id: 1,
-				rule: '一条',
-				price: 123
-			}, {
-				id: 2,
-				rule: '二条',
-				price: 246
-			}]
-		},
-		{
-			id: 2,
-			title: '辣度',
-			rules: [{
-				id: 1,
-				rule: '微微辣'
-			}, {
-				id: 2,
-				rule: '微辣'
-			}, {
-				id: 3,
-				rule: '中辣'
-			}, {
-				id: 4,
-				rule: '超级辣'
-			}, {
-				id: 5,
-				rule: '变态辣'
-			}]
-		}]
-	},
-	{
-		id: 112,
-		name: '清蒸鲈鱼',
-		price: 85,
-		img: 'luyu.jpg',
-		orders: 1004,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: []
-	},
-	{
-		id: 113,
-		name: '清蒸鸦片鱼',
-		price: 90,
-		img: 'yapianyu.jpg',
-		orders: 998,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: [{
-			id: 1,
-			title: '规格',
-			rules: [{
-				id: 1,
-				rule: '一条',
-				price: 90
-			}, {
-				id: 2,
-				rule: '二条',
-				price: 180
-			}]
-		},
-		{
-			id: 2,
-			title: '辣度',
-			rules: [{
-				id: 1,
-				rule: '微微辣'
-			}, {
-				id: 2,
-				rule: '微辣'
-			}, {
-				id: 3,
-				rule: '中辣'
-			}, {
-				id: 4,
-				rule: '超级辣'
-			}]
-		}]
-	},
-	{
-		id: 140,
-		name: '清蒸刀鱼',
-		price: 900,
-		img: 'daoyu.jpg',
-		orders: 1004,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: []
-	}]
-},
-{
-	id: 2,
-	name: '炒菜',
-	specials: [{
-		id: 114,
-		name: '毛肚炒菜',
-		price: 35,
-		img: 'maodu.jpg',
-		orders: 556,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: []
-	},
-	{
-		id: 115,
-		name: '地三鲜',
-		price: 25,
-		img: 'disanxian.jpg',
-		orders: 678,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: []
-	}]
-},
-{
-	id: 3,
-	name: '素菜',
-	specials: [{
-		id: 116,
-		name: '芦蒿',
-		price: 15,
-		img: 'luhao.jpg',
-		orders: 1002,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: []
-	}]
-},
-{
-	id: 4,
-	name: '煲汤',
-	specials: [{
-		id: 117,
-		name: '瓦罐鸡',
-		price: 85,
-		img: 'waguanji.jpg',
-		orders: 345,
-		orderNum: 0,
-		orderAllNum: 0,
-		standards: []
-	}]
-}];
 
 // var banners = [
 // 			{
@@ -192,13 +33,13 @@ Page({
 	data: {
 		// banners:banners,
 		winHeight: screen.getScreenSize().height - 40 - 50,
-		orderTotalNum: totalOrderNums,
+    orderTotalNum: app.globalData.totalOrderNums,
 		totalPrice: totalPrice,
 		isShowDetail: isShowDetail
 	},
 	onLoad: function () {
 		totalOrders.splice(0, totalOrders.length);//清空数组
-		totalOrderNums = 0;
+    app.globalData.totalOrderNums = 0;
 		totalPrice = 0;
 		var page = this;
     wx.request({
@@ -207,13 +48,14 @@ Page({
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
       success: function (res) {
-        
-        app.globalData.categories = res.data;
-        app.globalData.categories[0].selected = true;
-        page.setData({
-          list: app.globalData.categories,
-          category: app.globalData.categories[row],
-        });
+        if (res.data.statue == 0){
+          app.globalData.categories = res.data.data;
+          app.globalData.categories[0].selected = true;
+          page.setData({
+            list: app.globalData.categories,
+            category: app.globalData.categories[row],
+          });
+        }
       },
       fail: function () {
         // fail  
@@ -268,7 +110,7 @@ Page({
 	onTapLeftItem: function (e) {
 		var id = e.currentTarget.id,
 			list = this.data.list;
-    if (id == categories[row].caseTypeId) {
+    if (id == app.globalData.categories[row].caseTypeId) {
 			return;
 		}
 		for (var i = 0, len = list.length; i < len; ++i) {
@@ -419,7 +261,7 @@ Page({
 		var caseItem = this.data.caseItem;
 		caseItem.orderNum = num;
 		++caseItem.orderAllNum;
-		++totalOrderNums;
+    ++app.globalData.totalOrderNums;
     totalPrice += caseItem.casePrice;
 		caseItem.properties = this.data.ruleChoose;
 		totalOrders.push(JSON.parse(JSON.stringify(caseItem)));
@@ -428,7 +270,7 @@ Page({
 		this.setData({
 			orderNum: caseItem.orderNum,
 			category: this.data.category,
-			orderTotalNum: totalOrderNums,
+      orderTotalNum: app.globalData.totalOrderNums,
 			totalPrice: totalPrice
 		});
 	},
@@ -436,14 +278,14 @@ Page({
 	onAddCaseNumTip: function (e) {
     var caseItem = this.ArrayFindSameProperty(totalOrders, this.data.ruleChoose, this.data.caseItem.caseId);
 		++caseItem.orderNum;
-		++totalOrderNums;
+    ++app.globalData.totalOrderNums;
     totalPrice += caseItem.casePrice;
 		++this.data.caseItem.orderAllNum;
     this.data.category.cases[index] = this.data.caseItem;
 		this.setData({
 			orderNum: caseItem.orderNum,
 			category: this.data.category,
-			orderTotalNum: totalOrderNums,
+      orderTotalNum: app.globalData.totalOrderNums,
 			totalPrice: totalPrice
 		});
 	},
@@ -451,7 +293,7 @@ Page({
 	onRemoveCaseNumTip: function (e) {
     var caseItem = this.ArrayFindSameProperty(totalOrders, this.data.ruleChoose, this.data.caseItem.caseId);
 		--caseItem.orderNum;
-		--totalOrderNums;
+    --app.globalData.totalOrderNums;
     totalPrice -= caseItem.casePrice;
 		--this.data.caseItem.orderAllNum;
 		var ruleChoose = "";
@@ -464,14 +306,14 @@ Page({
 				category: this.data.category,
 				caseItem: this.data.caseItem,
 				// ruleChoose: ruleChoose,
-				orderTotalNum: totalOrderNums,
+        orderTotalNum: app.globalData.totalOrderNums,
 				totalPrice: totalPrice
 			});
 		} else {
 			this.setData({
 				orderNum: caseItem.orderNum,
 				category: this.data.category,
-				orderTotalNum: totalOrderNums,
+        orderTotalNum: app.globalData.totalOrderNums,
 				totalPrice: totalPrice
 			});
 		}
@@ -487,7 +329,7 @@ Page({
 			caseItem.orderNum = 0;
 		}
 		++caseItem.orderNum;
-		++totalOrderNums;
+    ++app.globalData.totalOrderNums;
     totalPrice += caseItem.casePrice;
 		if (this.ArrayContain(totalOrders, caseItem) == false) {
 			totalOrders.push(JSON.parse(JSON.stringify(caseItem)));
@@ -497,7 +339,7 @@ Page({
 
 		this.setData({
 			category: this.data.list[row],
-			orderTotalNum: totalOrderNums,
+      orderTotalNum: app.globalData.totalOrderNums,
 			totalPrice: totalPrice
 		});
 	},
@@ -506,7 +348,7 @@ Page({
 		index = e.target.dataset.index;
     var caseItem = this.data.list[row].cases[index];
 		--caseItem.orderNum;
-		--totalOrderNums;
+    --app.globalData.totalOrderNums;
     totalPrice -= caseItem.casePrice;
 		this.ArrayFindId(totalOrders, caseItem).orderNum--;
 		if (caseItem.orderNum == 0) {
@@ -515,13 +357,13 @@ Page({
 
 		this.setData({
 			category: this.data.list[row],
-			orderTotalNum: totalOrderNums,
+      orderTotalNum: app.globalData.totalOrderNums,
 			totalPrice: totalPrice
 		});
 	},
 
 	onShowDetialOrders: function (e) {
-		if (totalOrderNums == 0) {
+    if (app.globalData.totalOrderNums == 0) {
 			return;
 		}
 		if (isShowDetail) {
@@ -551,13 +393,13 @@ Page({
 			++cateItem.orderNum;
 		}
 
-		++totalOrderNums;
+    ++app.globalData.totalOrderNums;
     totalPrice += orderCateItem.casePrice;
 		this.setData({
 			category: this.data.list[row],
 			totalOrders: totalOrders,
 			totalPrice: totalPrice,
-			orderTotalNum: totalOrderNums
+      orderTotalNum: app.globalData.totalOrderNums
 		});
 	},
 
@@ -579,14 +421,14 @@ Page({
 			}
 		}
 
-		totalOrderNums--;
+    app.globalData.totalOrderNums--;
     totalPrice -= orderCateItem.casePrice;
-		if (totalOrderNums == 0) {
+    if (app.globalData.totalOrderNums == 0) {
 			isShowDetail = false;
 			this.setData({
 				category: this.data.list[row],
 				isShowDetail: isShowDetail,
-				orderTotalNum: totalOrderNums,
+        orderTotalNum: app.globalData.totalOrderNums,
 				totalPrice: totalPrice,
 			});
 			return;
@@ -595,7 +437,7 @@ Page({
 			category: this.data.list[row],
 			totalOrders: totalOrders,
 			totalPrice: totalPrice,
-			orderTotalNum: totalOrderNums
+      orderTotalNum: app.globalData.totalOrderNums
 		});
 
 	},

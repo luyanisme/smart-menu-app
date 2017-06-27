@@ -12,7 +12,8 @@ Page({
       that.setData({
         userInfo: userInfo,
         totalOrders: app.globalData.orders,
-        totalPrice: app.globalData.totalPrice
+        totalPrice: app.globalData.totalPrice,
+        totalOrderNums: app.globalData.totalOrderNums
       })
     })
 

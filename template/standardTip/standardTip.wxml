@@ -1,19 +1,20 @@
-<view class="choose-tip-shadow {{isStandardTips?'':'hidden'}}" bindtap="onTapChooseShadow">
-    <view class="choose-panel" catchtap="onTapPanel">
-      <text class="case-name-tips">{{caseItem.name}}</text>
+<template name="standardTip">
+  <view class="choose-tip-shadow {{isStandardTips?'':'hidden'}}" bindtap="onTapChooseShadow">
+    <view class="choose-panel" catchtap="onPreventTap">
+      <text class="case-name-tips">{{caseItem.caseName}}</text>
       <view class="dismiss_wrapper" catchtap="onTapChooseShadow">
         <image class="dismiss" src="../../icons/dismiss_icon.png"></image>
       </view>
       <view class="case-standard-tag-wrapper">
         <block wx:key="id" wx:for-items="{{caseItem.standards}}">
-          <text class="standard-title">{{item.title}}</text>
-          <block wx:key="id" wx:for-index="rule_index" wx:for-item="rule" wx:for-items="{{item.rules}}">
-            <text data-row="{{index}}" data-index="{{rule_index}}" catchtap="onStandTagTap" class="case-standard-tag{{rule.isSelected?'-selected':''}}">{{rule.rule}}</text>
+          <text class="standard-title">{{item[0].ruleName}}</text>
+          <block wx:key="id" wx:for-index="rule_index" wx:for-item="rule" wx:for-items="{{item}}">
+            <text data-row="{{index}}" data-index="{{rule_index}}" catchtap="onStandTagTap" class="case-standard-tag{{rule.isSelected?'-selected':''}}">{{rule.value}}</text>
           </block>
         </block>
       </view>
       <view class="pannel-footer-wrapper">
-        <text class="case-price-tip">￥{{caseItem.price}}</text>
+        <text class="case-price-tip">￥{{caseItem.casePrice}}</text>
         <text class="choosed-standard-tip">({{ruleChoose}})</text>
         <view class="add-tip-wrapper">
           <block wx:if="{{orderNum == null || orderNum == 0}}">
@@ -28,3 +29,4 @@
       </view>
     </view>
   </view>
+</template>

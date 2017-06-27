@@ -1,0 +1,18 @@
+<view class="wrapper">  
+  
+  <!--顶部导航栏-->  
+  <view class="swiper-tab">  
+    <view class="tab-item {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">tab1</view>  
+    <view class="tab-item {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">tab2</view>  
+  </view>  
+  
+  <!--内容主体-->  
+  <swiper style="height:{{winHeight+50}}px" class="swiper" current="{{currentTab}}" duration="200" bindchange="swiperChange">   
+    <swiper-item>  
+      <view>我是tab1</view>  
+    </swiper-item>  
+    <swiper-item>  
+      <view><include src="../../template/menu/menu.wxml"/></view>  
+    </swiper-item>  
+  </swiper>  
+</view>  

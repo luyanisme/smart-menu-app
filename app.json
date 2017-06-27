@@ -2,6 +2,7 @@
   "pages":[
     "pages/index/index",
     "pages/order/order",
+    "pages/main/main",
     "pages/waiting/waiting",
     "pages/menu/menu",
     "pages/case/case",

@@ -1,16 +1,6 @@
-<import src="../../template/standardTip/standardTip.wxml" />
+<import src="../standardTip/standardTip.wxml" />
 <view class="wrapper">
-
-  <!--<view class="banner-wrap {{scrollDown?'hidden':''}}">
-    <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="500">
-      <block wx:for="{{banners}}" wx:key="id">
-        <swiper-item>
-          <image bindtap="tapBanner" data-id="{{index}}" src="{{item.img}}" />
-        </swiper-item>
-      </block>
-    </swiper>
-  </view>-->
-  <view class="notice-wrap"></view>
+  <!--<view class="notice-wrap"></view>-->
   <view class="col-wrap" style="height:{{winHeight}}px">
     <view class="left-col">
       <scroll-view scroll-y="true">

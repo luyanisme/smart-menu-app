@@ -1,7 +1,7 @@
 <view class="wrapper">
   <view catchtap="onTapChoose" class="ordered-wrapper">
     <text class="ordered">已点</text>
-    <text class="badge {{totalOrders.length==0?'':'show'}}">{{totalOrders.length}}</text>
+    <text class="badge {{totalOrders.length==0?'':'show'}}">{{totalOrderNums}}</text>
   </view>
   <view class="desktop-num-wrapper">
     <text class="desktop-num-is">您的桌号为</text>
@@ -29,12 +29,12 @@
       <block wx:key="id" wx:for-items="{{totalOrders}}">
         <view class="order-case-item">
           <view class="order-title-wrapper">
-            <text class="order-title">· {{item.name}}</text>
+            <text class="order-title">· {{item.caseName}}</text>
 <block wx:if="{{item.properties != null}}">
             <text class="order-properties">({{item.properties}})</text>
             </block>
           </view>
-          <text class="order-price">{{item.price*item.orderNum}}￥</text>
+          <text class="order-price">{{item.casePrice*item.orderNum}}￥</text>
           <text class="oerder-num">×{{item.orderNum}}</text>
           <!--<view class="add-remove-wrapper">
             <image data-index="{{index}}" catchtap="onAddCaseNumOrder" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>

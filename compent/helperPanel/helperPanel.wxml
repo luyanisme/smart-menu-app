@@ -1,4 +1,0 @@
-<template name="helper-panel">
-<view class="choose-tip-shadow {{isStandardTips?'':'hidden'}}" bindtap="onTapChooseShadow">
-  </view>
-</template>
