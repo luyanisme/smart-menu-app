@@ -99,7 +99,6 @@ align-items: center;
 .icon_wrapper image{
   width: 40px;
   height: 40px;
-  border-radius: 20px;
 }
 
 .cate-title{
@@ -131,5 +130,3 @@ align-items: center;
   height:100%;
   background-color: #f4f4f4;
 }
-
-@import "../../wxss/helperPanel.wxss"

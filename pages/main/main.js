@@ -6,6 +6,26 @@ var totalOrders = [];//点单内容
 var totalPrice = 0;//点单总价
 var isShowDetail = false;//是否展示订单详情
 var originalPrice = 0;//初始价格，用来储存多规格case
+var banners = [
+  {
+    id: 3,
+    img: 'http://wxapp.im20.com.cn/impublic/waimai/imgs/index/banner_3.jpg',
+    url: '',
+    name: '百亿巨惠任你抢'
+  },
+  {
+    id: 1,
+    img: 'http://wxapp.im20.com.cn/impublic/waimai/imgs/index/banner_1.jpg',
+    url: '',
+    name: '告别午高峰'
+  },
+  {
+    id: 2,
+    img: 'http://wxapp.im20.com.cn/impublic/waimai/imgs/index/banner_2.jpg',
+    url: '',
+    name: '金牌好店'
+  }
+];
 Page({  
     data: {  
         // tab切换    
@@ -13,7 +33,8 @@ Page({
         winHeight: screen.getScreenSize().height - 40 - 50,
         orderTotalNum: app.globalData.totalOrderNums,
         totalPrice: totalPrice,
-        isShowDetail: isShowDetail
+        isShowDetail: isShowDetail,
+        banners: banners,
     },  
     swichNav: function (e) {  
         console.log(e);  
@@ -49,6 +70,7 @@ Page({
             page.setData({
               list: app.globalData.categories,
               category: app.globalData.categories[row],
+              categories: app.globalData.categories,
             });
           }
         },
@@ -60,6 +82,42 @@ Page({
         }
       })
     },
+    /**********************店铺*************************/
+    onTapCate: function (e) {
+      var index = e.currentTarget.dataset.index;
+      wx.navigateTo({
+        url: '../case/case?index=' + index
+      })
+    },
+
+    tapBanner: function (e) {
+      var name = this.data.banners[e.target.dataset.id].name;
+      wx.showModal({
+        title: '提示',
+        content: '您点击了“' + name + '”活动链接，活动页面暂未完成！',
+        showCancel: false
+      });
+    },
+
+    onTapCall: function (e) {
+      this.setData({
+        isShowHelperPanel: true
+      });
+      var notice = {
+        deskNum: '11号桌',
+        noticeContent: '正在呼叫服务员...',
+        isDealed: false,
+      };
+      wx.sendSocketMessage({
+        data: JSON.stringify(notice),
+      })
+    },
+
+    onTapOrder: function (e) {
+
+    },
+
+  /**********************菜谱*************************/
     onUnload: function () {
       // wx.setStorage({
       // 	key: "data",

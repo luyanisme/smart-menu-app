@@ -24,22 +24,27 @@ var banners = [
 Page({
 
   data: {
-    banners: banners,
+    severIp: 'http://' + app.globalData.server + '8080/',
     winHeight: screen.getScreenSize().height,
   },
 
   onLoad: function () {
     var page = this;
+    wx.showLoading({
+      title: '加载中',
+    })
     wx.request({
-      url: 'http://' + app.globalData.server + '8080/Api/getMenu?shopId=1',//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMainData?shopId=1',//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
       success: function (res) {
-        app.globalData.categories = res.data;
+        // app.globalData.categories = res.data.data;
         page.setData({
-          categories: app.globalData.categories,
+          funcs: res.data.data.funcs,
+          posts: res.data.data.posts
         });
+        wx.hideLoading();
       },
       fail: function () {
         // fail  
@@ -68,20 +73,22 @@ Page({
     })
 
   },
+  
   onTapCate: function (e) {
     var index = e.currentTarget.dataset.index;
+    var url = '../' + this.data.funcs[index].funcField + '/' + this.data.funcs[index].funcField;
     wx.navigateTo({
-      url: '../case/case?index=' + index
+      url: url
     })
   },
 
-  tapBanner: function (e) {
-    var name = this.data.banners[e.target.dataset.id].name;
-    wx.showModal({
-      title: '提示',
-      content: '您点击了“' + name + '”活动链接，活动页面暂未完成！',
-      showCancel: false
-    });
+  tapPost: function (e) {
+    var postName = this.data.posts[e.target.dataset.id].postName;
+    var postContent = this.data.posts[e.target.dataset.id].postDesc;
+    app.globalData.postHtml = postContent;
+    wx.navigateTo({
+      url: '../post/post?postName=' + postName
+    })
   },
 
   onTapCall: function (e) {

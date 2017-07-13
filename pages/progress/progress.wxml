@@ -1,0 +1,12 @@
+<!--progress.wxml-->
+<view class="wrapper">
+  <view class="case-item">
+    <view class="progress-bar">
+      <view class="dot"></view>
+      <view class="line"></view>
+      <view class="dot"></view>
+      <view class="line"></view>
+      <view class="dot"></view>
+    </view>
+  </view>
+</view>

@@ -1,16 +1,5 @@
 <import src="../../template/standardTip/standardTip.wxml" />
 <view class="wrapper">
-
-  <!--<view class="banner-wrap {{scrollDown?'hidden':''}}">
-    <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="500">
-      <block wx:for="{{banners}}" wx:key="id">
-        <swiper-item>
-          <image bindtap="tapBanner" data-id="{{index}}" src="{{item.img}}" />
-        </swiper-item>
-      </block>
-    </swiper>
-  </view>-->
-  <view class="notice-wrap"></view>
   <view class="col-wrap" style="height:{{winHeight}}px">
     <view class="left-col">
       <scroll-view scroll-y="true">
@@ -26,7 +15,7 @@
       <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" bindscroll="onGoodsScroll">
         <block wx:key="caseId" wx:for-items="{{category.cases}}">
           <view class="right-item">
-            <image class="case-img" src="http://127.0.0.1:8080/{{item.caseImagePath}}" mode="aspectFill"></image>
+            <image class="case-img" src="{{severIp+item.caseImagePath}}" mode="aspectFill"></image>
             <view class="info-container">
               <text class="case-name">{{item.caseName}}</text>
               <text class="case-ordered">{{item.orders}}已点</text>
@@ -34,12 +23,12 @@
             </view>
             <view class="button-wrap">
               <block wx:if="{{item.standards.length == 0}}">
-                <image catchtap="onAddCase" data-index="{{index}}" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
+                <image animation="{{specialCaseId == item.caseId ? animation : ''}}" catchtap="onAddCase" data-index="{{index}}" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
                 <text class="order-nums {{item.orderNum == 0 ? 'hidden':''}}">{{item.orderNum}}</text>
                 <image catchtap="onRemoveCase" data-index="{{index}}" class="remove_btn {{item.orderNum == 0 ? 'hidden':''}}" src="../../icons/remove_icon.png" mode="aspectFit"></image>
               </block>
               <block wx:if="{{item.standards.length > 0}}">
-                <text class="choose-standard" bindtap="onTapChoose" data-index="{{index}}">选规格</text>
+                <text animation="{{specialCaseId == item.caseId ? animation : ''}}" class="choose-standard" bindtap="onTapChoose" data-index="{{index}}">选规格</text>
                 <text class="badge-nums {{item.orderAllNum == 0 ? 'hidden':''}}">{{item.orderAllNum}}</text>
               </block>
             </view>

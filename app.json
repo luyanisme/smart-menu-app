@@ -1,17 +1,19 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/order/order",
     "pages/main/main",
     "pages/waiting/waiting",
     "pages/menu/menu",
     "pages/case/case",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/special/special",
+    "pages/post/post",
+    "pages/progress/progress"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#4F4C4C",
-
-    "navigationBarTextStyle":"#ffffff"
+    "navigationBarTextStyle": "#ffffff"
   }
 }

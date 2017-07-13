@@ -1,0 +1,16 @@
+/* post.wxss */
+page {
+  height: 100%;
+  overflow: hidden;
+}
+
+.wrapper {
+  height: 100%;
+  overflow: hidden;
+  /*display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;*/
+}
+
+@import "../../wxParse/wxParse.wxss";

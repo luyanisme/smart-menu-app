@@ -2,7 +2,7 @@ var app = getApp();
 Page({
   data: {
     totalOrders: [],
-    totalPrice:0
+    totalPrice: 0
   },
   onLoad: function (options) {
 
@@ -86,9 +86,9 @@ Page({
     this.timer && clearInterval(this.timer);
   },
 
-onPreventTap: function (e) {
+  onPreventTap: function (e) {
 
-	},
+  },
 
   onTapChooseShadow: function (e) {
     if (this.data.isStandardTips) {
@@ -113,5 +113,5 @@ onPreventTap: function (e) {
       });
     }
   },
-  
+
 })

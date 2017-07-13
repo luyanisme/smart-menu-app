@@ -36,4 +36,6 @@ page {
   border-bottom: 5rpx solid #676A6C;  
 }  
 
-@import "../../template/menu/menu.wxss"
+@import "../../template/menu/menu.wxss" 
+
+@import "../../template/shop/shop.wxss"
