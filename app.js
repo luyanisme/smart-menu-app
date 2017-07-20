@@ -27,6 +27,8 @@ App({
   },
   globalData: {
     userInfo: null,
+    shopId:1,
+    deskId:11,
     orders: [],
     totalOrderNums:0,
     totalPrice: 0,

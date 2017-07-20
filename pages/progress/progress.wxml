@@ -1,12 +1,18 @@
 <!--progress.wxml-->
+<import src="../../template/progressBar/progressBar.wxml" />
 <view class="wrapper">
+<scroll-view scroll-y="true">
   <view class="case-item">
-    <view class="progress-bar">
-      <view class="dot"></view>
-      <view class="line"></view>
-      <view class="dot"></view>
-      <view class="line"></view>
-      <view class="dot"></view>
+    <view class="case-title-wrapper">
+      <text class="case-title">1.红烧河豚</text>
+      <text class="case-property">(一条+微辣)</text>
     </view>
+    <template is="progressBar" data="{{progressIndex:2}}"></template>
+    <view class="bottom-line"></view>
+  </view>
+  </scroll-view>
+
+  <view class="reminder-case">
+  <text style="color:#fff;font-size:15px;">催单</text>
   </view>
 </view>

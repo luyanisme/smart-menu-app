@@ -26,7 +26,7 @@ Page({
     totalPrice = 0;
     var page = this;
     wx.request({
-      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMenu?shopId=1',//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMenu?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  

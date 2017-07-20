@@ -1,4 +1,8 @@
+
 var screen = require('../../utils/screenUtil.js');
+import { $wuxDialog } from '../../components/wux'
+import { $wuxToptips } from '../../components/wux'
+
 var app = getApp();
 var banners = [
   {
@@ -34,7 +38,7 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMainData?shopId=1',//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMainData?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
@@ -73,7 +77,7 @@ Page({
     })
 
   },
-  
+
   onTapCate: function (e) {
     var index = e.currentTarget.dataset.index;
     var url = '../' + this.data.funcs[index].funcField + '/' + this.data.funcs[index].funcField;
@@ -92,16 +96,58 @@ Page({
   },
 
   onTapCall: function (e) {
-    this.setData({
-      isShowHelperPanel: true
-    });
-    var notice = {
-      deskNum: '11号桌',
-      noticeContent: '正在呼叫服务员...',
-      isDealed: false,
-    };
-    wx.sendSocketMessage({
-      data: JSON.stringify(notice),
+    const page = this;
+    $wuxDialog.prompt({
+      title: '呼叫服务员',
+      content: '您最多可以输入8个字符',
+      fieldtype: 'text',
+      defaultText: '',
+      placeholder: '请输入您需要的服务',
+      maxlength: 8, 
+      onConfirm(e) {
+        const value = page.data.$wux.dialog.prompt.response;
+        if(value == ""){
+          $wuxDialog.alert({
+            title: '提示',
+            content: '您还未输入内容',
+          })
+          return;
+        }
+        wx.showLoading({
+          title: '呼叫中',
+        })
+        var notice = {
+          clientType:0,
+          noticeType:0,
+          shopId: app.globalData.shopId,
+          deskId: app.globalData.deskId,
+          deskNum: '11号桌',
+          noticeContent: value,
+          noticeIsDealed: false
+        };
+        wx.sendSocketMessage({
+          data: JSON.stringify(notice),
+        });
+        wx.onSocketMessage(function (data) {
+          var result = JSON.parse(data.data);
+          if (result.statue == 0){
+            wx.hideLoading();
+            $wuxToptips.success({
+              hidden: !0,
+              text: result.msg,
+            })
+          } else if (result.statue == 1){
+            wx.hideLoading();
+            $wuxToptips.show({
+              timer: 3000,
+              text: result.msg,
+              success: () => console.log('toptips', error)
+            })
+          }
+        })
+      },
+      onCancel(e) {
+      },
     })
   },
 
@@ -109,15 +155,4 @@ Page({
 
   },
 
-  onTapHelperPanelShadow: function (e) {
-    if (this.data.isShowHelperPanel) {
-      this.setData({
-        isShowHelperPanel: false
-      });
-    } else {
-      this.setData({
-        isShowHelperPanel: true
-      });
-    }
-  },
 })

@@ -1,3 +1,7 @@
+<import src="../../components/dialog/dialog.wxml"/>
+<import src="../../components/toptips/toptips.wxml"/>
+<template is="dialog" data="{{ ...$wux.dialog }}"/>
+<template is="toptips" data="{{ ...$wux.toptips }}"/>
 <view class="wrapper">
 <scroll-view style="height: {{winHeight}}px" scroll-y="true">
   <view class="banner-wrap">

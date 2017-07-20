@@ -1,0 +1,12 @@
+<template name="progressBar">
+<view class="progress-bar">
+      <view class="dot"></view>
+      <view class="line" style="background-color:{{progressIndex == 0 ? '#cccccc' : '#6AD118'}}"></view>
+      <view class="dot" style="background-color:{{progressIndex == 0 ? '#cccccc' : '#6AD118'}}"></view>
+      <view class="line" style="background-color:{{progressIndex == 2 ? '#6AD118' : '#CCCCCC'}}"></view>
+      <view class="dot" style="background-color:{{progressIndex == 2 ? '#6AD118' : '#CCCCCC'}}"></view>
+      <text class="start text-style">开始</text>
+      <text class="doing text-style" style="color:{{progressIndex == 0 ? '#a4a4a4' : '#6AD118'}}">制作中</text>
+      <text class="complete text-style" style="color:{{progressIndex == 2 ? '#6AD118' : '#a4a4a4'}}">完成</text>
+    </view>
+</template>

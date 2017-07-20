@@ -9,7 +9,8 @@
     "pages/logs/logs",
     "pages/special/special",
     "pages/post/post",
-    "pages/progress/progress"
+    "pages/progress/progress",
+    "pages/enter/enter"
   ],
   "window": {
     "backgroundTextStyle": "light",

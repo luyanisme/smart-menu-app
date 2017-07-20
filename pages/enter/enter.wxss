@@ -1,0 +1,44 @@
+/* enter.wxss */
+page {
+  height: 100%;
+  overflow: hidden;
+}
+
+.wrapper {
+  height: 100%;
+  overflow: hidden;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+
+.btn-wrapper{
+  position: absolute;
+  top: 20%;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo{
+width: 90px;
+height: 90px;
+}
+
+.scan-qr{
+  width: 95%;
+  height: 40px;
+  border-radius: 5px;
+  background-color: #48C13E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scan-qr text{
+  font-size: 15px;
+  color: #fff;
+}
