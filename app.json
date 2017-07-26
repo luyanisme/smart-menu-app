@@ -10,7 +10,9 @@
     "pages/special/special",
     "pages/post/post",
     "pages/progress/progress",
-    "pages/enter/enter"
+    "pages/enter/enter",
+    "pages/pay/pay",
+    "pages/pay/pay"
   ],
   "window": {
     "backgroundTextStyle": "light",

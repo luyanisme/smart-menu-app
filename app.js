@@ -33,7 +33,9 @@ App({
     totalOrderNums:0,
     totalPrice: 0,
     categories:[],
+    selectRow:0,
     server:'127.0.0.1:',
-    postHtml:''
+    postHtml:'',
+    isLoaded:false
   }
 })

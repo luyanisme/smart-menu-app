@@ -6,6 +6,7 @@ var totalOrders = [];//点单内容
 var totalPrice = 0;//点单总价
 var isShowDetail = false;//是否展示订单详情
 var originalPrice = 0;//初始价格，用来储存多规格case
+import { $wuxToptips } from '../../components/wux'
 
 Page({
 
@@ -13,14 +14,21 @@ Page({
     severIp: 'http://' + app.globalData.server + '8080/',
     winHeight: screen.getScreenSize().height - 50,
     orderTotalNum: app.globalData.totalOrderNums,
-    totalPrice: totalPrice,
-    isShowDetail: isShowDetail
+    totalPrice: app.globalData.totalPrice,
+    isShowDetail: isShowDetail,
+    isNothing:true
   },
   onLoad: function (options) {
+    wx.setNavigationBarTitle({ title: 'XX餐厅' });
+    if (app.globalData.isLoaded == true) {
+      this.setData({
+        specialCaseId: options.caseId
+      });
+      return;
+    }
     wx.showLoading({
       title: '加载中',
     })
-    wx.setNavigationBarTitle({ title: 'XX餐厅' });
     totalOrders.splice(0, totalOrders.length);//清空数组
     app.globalData.totalOrderNums = 0;
     totalPrice = 0;
@@ -39,6 +47,7 @@ Page({
             category: app.globalData.categories[row],
             specialCaseId: options.caseId,
           });
+          app.globalData.isLoaded = true;
           wx.hideLoading();
         }
       },
@@ -90,14 +99,37 @@ Page({
     // 	data: this.data
     // })
     app.globalData.orders = totalOrders;
+    app.globalData.totalPrice = totalPrice;
+    app.globalData.selectRow = row;
+  },
+
+  onReady: function () {
+    // this.setData({
+    //   list: app.globalData.categories,
+    //   category: app.globalData.categories[0],
+    //   totalOrders: app.globalData.totalOrders,
+    //   totalPrice: app.globalData.totalPrice,
+    //   orderTotalNum: app.globalData.totalOrderNums
+    // });
   },
 
   onShow: function () {
+      this.setData({
+        isNothing: (app.globalData.totalOrderNums == 0 ? true : false)
+      });
+    
+    totalPrice = app.globalData.totalPrice;
+    this.setData({
+      list: app.globalData.categories,
+      category: app.globalData.categories[app.globalData.selectRow],
+      totalOrders: app.globalData.totalOrders,
+      totalPrice: app.globalData.totalPrice,
+      orderTotalNum: app.globalData.totalOrderNums
+    });
     var animation = wx.createAnimation({
       duration: 800,
       timingFunction: "ease",
     })
-
     var isShow = true;
     this.timer = setInterval(function () {
       if (isShow == true) {
@@ -108,14 +140,14 @@ Page({
         isShow = true;
       }
       this.setData({
-        animation: animation.export()
+        animation: animation.export(),
       })
     }.bind(this), 800);
   },
 
   onTapLeftItem: function (e) {
     var id = e.currentTarget.id,
-      list = this.data.list;
+      list = app.globalData.categories;
     if (id == app.globalData.categories[row].caseTypeId) {
       return;
     }
@@ -158,7 +190,7 @@ Page({
   onTapChoose: function (e) {
     this.RebackAnimation();
     index = e.target.dataset.index;
-    var caseItem = this.data.list[row].cases[index];
+    var caseItem = app.globalData.categories[row].cases[index];
     originalPrice = caseItem.casePrice;
     caseItem.row = row;
     caseItem.index = index;
@@ -208,7 +240,7 @@ Page({
 
   onTapChooseShadow: function (e) {
     if (this.data.isStandardTips) {
-      this.data.list[row].cases[index] = this.data.caseItem;
+      app.globalData.categories[row].cases[index] = this.data.caseItem;
       this.setData({
         isStandardTips: false
       });
@@ -277,7 +309,8 @@ Page({
       orderNum: caseItem.orderNum,
       category: this.data.category,
       orderTotalNum: app.globalData.totalOrderNums,
-      totalPrice: totalPrice
+      totalPrice: totalPrice,
+      isNothing: false
     });
   },
 
@@ -324,12 +357,18 @@ Page({
       });
     }
 
+    if (app.globalData.totalOrderNums == 0) {
+      this.setData({
+        isNothing: true
+      });
+    }
+
   },
 
   onAddCase: function (e) {
     this.RebackAnimation();
     index = e.target.dataset.index;
-    var caseItem = this.data.list[row].cases[index];
+    var caseItem = app.globalData.categories[row].cases[index];
     caseItem.row = row;
     caseItem.index = index;
     if (caseItem.orderNum == null) {
@@ -345,15 +384,16 @@ Page({
     }
 
     this.setData({
-      category: this.data.list[row],
+      category: app.globalData.categories[row],
       orderTotalNum: app.globalData.totalOrderNums,
-      totalPrice: totalPrice
+      totalPrice: totalPrice,
+      isNothing: false
     });
   },
 
   onRemoveCase: function (e) {
     index = e.target.dataset.index;
-    var caseItem = this.data.list[row].cases[index];
+    var caseItem = app.globalData.categories[row].cases[index];
     --caseItem.orderNum;
     --app.globalData.totalOrderNums;
     totalPrice -= caseItem.casePrice;
@@ -363,10 +403,15 @@ Page({
     }
 
     this.setData({
-      category: this.data.list[row],
+      category: app.globalData.categories[row],
       orderTotalNum: app.globalData.totalOrderNums,
       totalPrice: totalPrice
     });
+    if (app.globalData.totalOrderNums == 0){
+      this.setData({
+        isNothing: true
+      });
+    }
   },
 
   onShowDetialOrders: function (e) {
@@ -391,7 +436,7 @@ Page({
   onAddCaseNumOrder: function (e) {
     var index = e.target.dataset.index;
     var orderCateItem = totalOrders[index];
-    var cateItem = this.data.list[orderCateItem.row].cases[orderCateItem.index];
+    var cateItem = app.globalData.categories[orderCateItem.row].cases[orderCateItem.index];
     if (cateItem.orderAllNum > 0) {
       ++cateItem.orderAllNum;
       ++orderCateItem.orderNum;
@@ -403,17 +448,17 @@ Page({
     ++app.globalData.totalOrderNums;
     totalPrice += orderCateItem.casePrice;
     this.setData({
-      category: this.data.list[row],
+      category: app.globalData.categories[row],
       totalOrders: totalOrders,
       totalPrice: totalPrice,
-      orderTotalNum: app.globalData.totalOrderNums
+      orderTotalNum: app.globalData.totalOrderNums,
     });
   },
 
   onRemoveCaseNumOrder: function (e) {
     var index = e.target.dataset.index;
     var orderCateItem = totalOrders[index];
-    var cateItem = this.data.list[orderCateItem.row].cases[orderCateItem.index];
+    var cateItem = app.globalData.categories[orderCateItem.row].cases[orderCateItem.index];
     if (cateItem.orderAllNum > 0) {
       --cateItem.orderAllNum;
       --orderCateItem.orderNum;
@@ -433,7 +478,7 @@ Page({
     if (app.globalData.totalOrderNums == 0) {
       isShowDetail = false;
       this.setData({
-        category: this.data.list[row],
+        category: app.globalData.categories[row],
         isShowDetail: isShowDetail,
         orderTotalNum: app.globalData.totalOrderNums,
         totalPrice: totalPrice,
@@ -441,20 +486,34 @@ Page({
       return;
     }
     this.setData({
-      category: this.data.list[row],
+      category: app.globalData.categories[row],
       totalOrders: totalOrders,
       totalPrice: totalPrice,
       orderTotalNum: app.globalData.totalOrderNums
     });
 
+    if (app.globalData.totalOrderNums == 0) {
+      this.setData({
+        isNothing: true
+      });
+    }
   },
 
   onTapComplete: function (e) {
     app.globalData.orders = totalOrders;
     app.globalData.totalPrice = this.data.totalPrice;
-    wx.navigateTo({
-      url: '../waiting/waiting'
-    })
+    app.globalData.selectRow = row;
+    if (app.globalData.orders.length == 0){
+      $wuxToptips.show({
+        timer: 2000,
+        text: '您还未选择任何商品',
+        success: () => console.log('toptips', error)
+      })
+    } else{
+      wx.navigateTo({
+        url: '../pay/pay'
+      })
+    }
   },
 
   RebackAnimation: function () {

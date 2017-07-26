@@ -1,0 +1,33 @@
+<!--pay.wxml-->
+<import src="../../components/toptips/toptips.wxml"/>
+<template is="toptips" data="{{ ...$wux.toptips }}"/>
+<view class="wrapper">
+<view class="orders-container">
+  <scroll-view scroll-y="true" catchtap="onPreventTap">
+      <block wx:key="id" wx:for-items="{{totalOrders}}">
+        <view class="order-case-item">
+          <view class="order-title-wrapper">
+            <text class="order-title">· {{item.caseName}}</text>
+<block wx:if="{{item.properties != null}}">
+            <text class="order-properties">({{item.properties}})</text>
+            </block>
+          </view>
+          <text class="order-price">{{item.casePrice*item.orderNum}}￥</text>
+          <view class="add-remove-wrapper">
+            <image data-index="{{index}}" catchtap="onAddCaseNumOrder" class="add_btn" src="../../icons/add_icon.png" mode="aspectFit"></image>
+            <text class="order-nums">{{item.orderNum}}</text>
+            <image data-index="{{index}}" catchtap="onRemoveCaseNumOrder" class="remove_btn" src="../../icons/remove_icon.png" mode="aspectFit"></image>
+          </view>
+          <view class="h_line"></view>
+        </view>
+      </block>
+    </scroll-view>
+    <view class="h_line_dash"></view>
+    <view class="totalPrice">
+    <text>共计:{{totalPrice}}￥</text>
+    </view>
+  </view>
+  <view class="pay-btn" catchtap="pay">
+    <text>立即下单</text>
+  </view>
+</view>

@@ -1,4 +1,6 @@
 <import src="../../template/standardTip/standardTip.wxml" />
+<import src="../../components/toptips/toptips.wxml"/>
+<template is="toptips" data="{{ ...$wux.toptips }}"/>
 <view class="wrapper">
   <view class="col-wrap" style="height:{{winHeight}}px">
     <view class="left-col">
@@ -71,7 +73,7 @@
       <text class="total_price">{{totalPrice}}￥</text>
     </view>
     <view class="right-footer-cart-wrapper" catchtap="onTapComplete">
-      <text class="complete">结算</text>
+      <text class="complete" style="background-color:{{isNothing == true ? '#a4a4a4' : '#de5245'}}">结算</text>
     </view>
   </view>
 </view>
