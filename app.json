@@ -12,7 +12,8 @@
     "pages/progress/progress",
     "pages/enter/enter",
     "pages/pay/pay",
-    "pages/pay/pay"
+    "pages/pay/pay",
+    "pages/ordered/ordered"
   ],
   "window": {
     "backgroundTextStyle": "light",

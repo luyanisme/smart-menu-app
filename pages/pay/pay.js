@@ -133,7 +133,9 @@ Page({
       deskNum: '11号桌',
       orderPrice: app.globalData.totalPrice,
       orderContent: JSON.stringify(app.globalData.orders),
-      noticeIsDealed: false
+      noticeIsDealed: false,
+      orderIsPayed:false,
+      orderIsUsing:true
     };
     wx.sendSocketMessage({
       data: JSON.stringify(order),
@@ -142,9 +144,13 @@ Page({
       var result = JSON.parse(data.data);
       if (result.statue == 0) {
         wx.hideLoading();
+        app.reStore();
         $wuxToptips.success({
           hidden: !0,
           text: result.msg,
+          success: () => wx.navigateBack(({
+            delta: app.globalData.isFromMenu ? 1 : 2
+          }))
         })
       } else if (result.statue == 1) {
         wx.hideLoading();

@@ -95,6 +95,13 @@ Page({
     })
   },
 
+  onShow: function () {
+    app.globalData.isClear = false;
+    this.setData({
+      ordersNum: app.globalData.totalOrderNums
+    });
+  },
+
   onTapCall: function (e) {
     const page = this;
     $wuxDialog.prompt({
@@ -152,7 +159,18 @@ Page({
   },
 
   onTapOrder: function (e) {
-
+    if (app.globalData.orders.length == 0) {
+      $wuxToptips.show({
+        timer: 2000,
+        text: '您的订单为空',
+        success: () => console.log('toptips', error)
+      })
+    } else {
+      wx.navigateTo({
+        url: '../pay/pay'
+      })
+      app.globalData.isFromMenu = true;
+    }
   },
 
 })

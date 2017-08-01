@@ -25,17 +25,31 @@ App({
       })
     }
   },
+  reStore: function () {
+    this.globalData.orders = [];
+    this.globalData.totalOrderNums = 0;
+    this.globalData.totalPrice = 0;
+    this.globalData.categories = JSON.parse(this.globalData.originalCategories);
+    this.globalData.selectRow = 0;
+    this.globalData.categories[0].selected = true;
+    this.globalData.isClear = true;
+  },
+
   globalData: {
     userInfo: null,
-    shopId:1,
-    deskId:11,
+    shopId: 1,
+    deskId: 11,
     orders: [],
-    totalOrderNums:0,
+    totalOrderNums: 0,
     totalPrice: 0,
-    categories:[],
-    selectRow:0,
-    server:'127.0.0.1:',
-    postHtml:'',
-    isLoaded:false
+    categories: [],
+    originalCategories: null,
+    selectRow: 0,
+    server: '127.0.0.1:',
+    postHtml: '',
+    isLoaded: false,
+    ordered: [],
+    isClear: false,
+    isFromMenu: true
   }
 })

@@ -15,7 +15,7 @@
     <image catchtap="onTapCall" class="call-btn" src="../../icons/call_icon.png" mode="aspectFit"></image>
     <view catchtap="onTapOrder" class="order-btn">
     <image src="../../icons/order_icon.png" mode="aspectFit"></image>
-    <text class="order-num">11</text>
+    <text class="order-num {{ordersNum == 0 ? 'hidden':''}}">{{ordersNum}}</text>
     </view>
   </view>
   <view class="cate-wrapper">

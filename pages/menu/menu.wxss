@@ -70,6 +70,10 @@ text-align: center;
 line-height: 12px;
 }
 
+.order-num.hidden{
+  display: none;
+}
+
 .cate-wrapper{
 display: flex;
 flex-direction: row;

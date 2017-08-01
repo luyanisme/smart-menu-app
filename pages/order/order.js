@@ -41,6 +41,7 @@ Page({
       success: function (res) {
         if (res.data.statue == 0) {
           app.globalData.categories = res.data.data;
+          app.globalData.originalCategories = JSON.stringify(res.data.data);
           app.globalData.categories[0].selected = true;
           page.setData({
             list: app.globalData.categories,
@@ -93,14 +94,18 @@ Page({
     // 	}
     // })
   },
+
   onUnload: function () {
     // wx.setStorage({
     // 	key: "data",
     // 	data: this.data
     // })
-    app.globalData.orders = totalOrders;
-    app.globalData.totalPrice = totalPrice;
-    app.globalData.selectRow = row;
+    if (!app.globalData.isClear){
+      app.globalData.orders = totalOrders;
+      app.globalData.totalPrice = totalPrice;
+      app.globalData.selectRow = row;
+    }
+
   },
 
   onReady: function () {
@@ -119,10 +124,11 @@ Page({
       });
     
     totalPrice = app.globalData.totalPrice;
+    totalOrders = app.globalData.orders;
     this.setData({
       list: app.globalData.categories,
       category: app.globalData.categories[app.globalData.selectRow],
-      totalOrders: app.globalData.totalOrders,
+      totalOrders: totalOrders,
       totalPrice: app.globalData.totalPrice,
       orderTotalNum: app.globalData.totalOrderNums
     });
@@ -513,6 +519,7 @@ Page({
       wx.navigateTo({
         url: '../pay/pay'
       })
+      app.globalData.isFromMenu = false;
     }
   },
 
