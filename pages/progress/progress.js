@@ -1,4 +1,5 @@
 // progress.js
+var app = getApp();
 Page({
 
   /**
@@ -12,7 +13,31 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var that = this;
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.request({
+      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getOrdered?shopId=' + app.globalData.shopId + '&deskId=' + app.globalData.deskId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      data: {},
+      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
+      // header: {}, // 设置请求的 header  
+      success: function (res) {
+        if (res.data.statue == 0) {
+          that.setData({
+            totalOrders: res.data.data.ordered,
+            totalPrice: res.data.data.totalPrice,
+          })
+          wx.hideLoading();
+        }
+      },
+      fail: function () {
+        // fail  
+      },
+      complete: function () {
+        // complete  
+      }
+    })
   },
 
   /**

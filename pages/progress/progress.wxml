@@ -2,14 +2,18 @@
 <import src="../../template/progressBar/progressBar.wxml" />
 <view class="wrapper">
 <scroll-view scroll-y="true">
+<block wx:key="id" wx:for-items="{{totalOrders}}">
   <view class="case-item">
     <view class="case-title-wrapper">
-      <text class="case-title">1.红烧河豚</text>
-      <text class="case-property">(一条+微辣)</text>
+      <text class="case-title">1.{{item.caseName}}</text>
+      <block wx:if="{{item.properties != null}}">
+      <text class="case-property">({{item.properties}})</text>
+      </block>
     </view>
-    <template is="progressBar" data="{{progressIndex:2}}"></template>
+    <template is="progressBar" data="{{progressIndex:item.caseProgress}}"></template>
     <view class="bottom-line"></view>
   </view>
+  </block>
   </scroll-view>
 
   <view class="reminder-case">

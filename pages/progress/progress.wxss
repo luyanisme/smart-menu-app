@@ -18,6 +18,7 @@ page {
   height: 80px;
   position: relative;
   display: flex;
+  background-color: #ffffff;
 }
 
 .case-title-wrapper{
