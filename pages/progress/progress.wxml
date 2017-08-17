@@ -1,5 +1,7 @@
 <!--progress.wxml-->
 <import src="../../template/progressBar/progressBar.wxml" />
+<import src="../../components/toptips/toptips.wxml"/>
+<template is="toptips" data="{{ ...$wux.toptips }}"/>
 <view class="wrapper">
 <scroll-view scroll-y="true">
 <block wx:key="id" wx:for-items="{{totalOrders}}">
@@ -16,7 +18,7 @@
   </block>
   </scroll-view>
 
-  <view class="reminder-case">
+  <view catchtap="tapOnUrge" class="reminder-case">
   <text style="color:#fff;font-size:15px;">催单</text>
   </view>
 </view>

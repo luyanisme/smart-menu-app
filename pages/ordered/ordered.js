@@ -87,5 +87,9 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+
+  payed:function(e){
+
   }
 })

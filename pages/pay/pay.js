@@ -133,8 +133,9 @@ Page({
       deskNum: '11号桌',
       orderPrice: app.globalData.totalPrice,
       orderContent: JSON.stringify(app.globalData.orders),
-      noticeIsDealed: false,
+      orderIsDealed: false,
       orderIsPayed:false,
+      orderIsOrdered:false,
       orderIsUsing:true
     };
     wx.sendSocketMessage({

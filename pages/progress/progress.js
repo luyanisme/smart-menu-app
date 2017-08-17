@@ -1,5 +1,7 @@
 // progress.js
 var app = getApp();
+import { $wuxToptips } from '../../components/wux'
+
 Page({
 
   /**
@@ -87,5 +89,37 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  
+  tapOnUrge:function(e){
+    var notice = {
+      clientType: 0,
+      noticeType: 0,
+      shopId: app.globalData.shopId,
+      deskId: app.globalData.deskId,
+      deskNum: '11号桌',
+      noticeContent: '11号桌催单',
+      noticeIsDealed: false
+    };
+    wx.sendSocketMessage({
+      data: JSON.stringify(notice),
+    });
+    wx.onSocketMessage(function (data) {
+      var result = JSON.parse(data.data);
+      if (result.statue == 0) {
+        wx.hideLoading();
+        $wuxToptips.success({
+          hidden: !0,
+          text: result.msg,
+        })
+      } else if (result.statue == 1) {
+        wx.hideLoading();
+        $wuxToptips.show({
+          timer: 3000,
+          text: result.msg,
+          success: () => console.log('toptips', error)
+        })
+      }
+    })
   }
 })
