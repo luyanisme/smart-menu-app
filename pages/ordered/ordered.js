@@ -1,5 +1,7 @@
 // ordered.js
 var app = getApp();
+import { $wuxToptips } from '../../components/wux'
+var app = getApp();
 Page({
 
   /**
@@ -24,11 +26,23 @@ Page({
       // header: {}, // 设置请求的 header  
       success: function (res) {
         if (res.data.statue == 0) {
-          that.setData({
-            totalOrders: res.data.data.ordered,
-            totalPrice: res.data.data.totalPrice,
-          })
           wx.hideLoading();
+          if (res.data.data == null){
+            $wuxToptips.success({
+              hidden: !0,
+              text: res.data.msg,
+              success: () => wx.navigateBack()
+            });
+            that.setData({
+              isNoData: true
+            })
+          } else{
+            that.setData({
+              isNoData: false,
+              totalOrders: res.data.data.ordered,
+              totalPrice: res.data.data.totalPrice,
+            })
+          }
         }
       },
       fail: function () {
@@ -90,6 +104,35 @@ Page({
   },
 
   payed:function(e){
-
+    var notice = {
+      clientType: 0,
+      noticeType: 0,
+      shopId: app.globalData.shopId,
+      deskId: app.globalData.deskId,
+      deskNum: '11号桌',
+      noticeContent: '11号桌买单',
+      noticeIsDealed: false
+    };
+    wx.sendSocketMessage({
+      data: JSON.stringify(notice),
+    });
+    wx.onSocketMessage(function (data) {
+      var result = JSON.parse(data.data);
+      if (result.statue == 0) {
+        wx.hideLoading();
+        $wuxToptips.success({
+          hidden: !0,
+          text: result.msg,
+          success: () => wx.navigateBack()
+        })
+      } else if (result.statue == 1) {
+        wx.hideLoading();
+        $wuxToptips.show({
+          timer: 3000,
+          text: result.msg,
+          success: () => console.log('toptips', error)
+        })
+      }
+    })
   }
 })

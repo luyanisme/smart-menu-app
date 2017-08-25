@@ -167,7 +167,7 @@ Page({
       })
     } else {
       wx.navigateTo({
-        url: '../pay/pay'
+        url: '../orders/orders'
       })
       app.globalData.isFromMenu = true;
     }

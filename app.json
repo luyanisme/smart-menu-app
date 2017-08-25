@@ -11,8 +11,7 @@
     "pages/post/post",
     "pages/progress/progress",
     "pages/enter/enter",
-    "pages/pay/pay",
-    "pages/pay/pay",
+    "pages/orders/orders",
     "pages/ordered/ordered"
   ],
   "window": {

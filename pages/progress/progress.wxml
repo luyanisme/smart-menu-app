@@ -7,7 +7,7 @@
 <block wx:key="id" wx:for-items="{{totalOrders}}">
   <view class="case-item">
     <view class="case-title-wrapper">
-      <text class="case-title">1.{{item.caseName}}</text>
+      <text class="case-title">{{index+1}}.{{item.caseName}}</text>
       <block wx:if="{{item.properties != null}}">
       <text class="case-property">({{item.properties}})</text>
       </block>

@@ -130,7 +130,7 @@ Page({
       noticeType: 1,
       shopId: app.globalData.shopId,
       deskId: app.globalData.deskId,
-      deskNum: '11号桌',
+      deskNum: '1号桌',
       orderPrice: app.globalData.totalPrice,
       orderContent: JSON.stringify(app.globalData.orders),
       orderIsDealed: false,

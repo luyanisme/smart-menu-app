@@ -1,4 +1,6 @@
 <!--ordered.wxml-->
+<import src="../../components/toptips/toptips.wxml"/>
+<template is="toptips" data="{{ ...$wux.toptips }}"/>
 <view class="wrapper">
   <view class="orders-container">
     <scroll-view scroll-y="true" catchtap="onPreventTap">
@@ -21,12 +23,14 @@
         </view>
       </block>
     </scroll-view>
+    <view class="bottom_wrapper" style="display:{{isNoData?'none':'block'}}">
     <view class="h_line_dash"></view>
     <view class="totalPrice">
       <text>共计:{{totalPrice}}￥</text>
     </view>
     <view class="payed-btn" catchtap="payed">
       <text>我要买单</text>
+    </view>
     </view>
   </view>
 </view>

@@ -1,6 +1,7 @@
 <import src="../../template/standardTip/standardTip.wxml" />
-<import src="../../components/toptips/toptips.wxml"/>
-<template is="toptips" data="{{ ...$wux.toptips }}"/>
+<import src="../../components/toptips/toptips.wxml" />
+<template is="toptips" data="{{ ...$wux.toptips }}" />
+
 <view class="wrapper">
   <view class="col-wrap" style="height:{{winHeight}}px">
     <view class="left-col">
@@ -20,7 +21,27 @@
             <image class="case-img" src="{{severIp+item.caseImagePath}}" mode="aspectFill"></image>
             <view class="info-container">
               <text class="case-name">{{item.caseName}}</text>
-              <text class="case-ordered">{{item.orders}}已点</text>
+              <!-- <text class="case-ordered">{{item.orders}}已点</text> -->
+              <view class="case-ordered">
+              <block wx:if="{{item.caseHot == 0}}">
+              <text class="star"></text>
+              </block>
+              <block wx:if="{{item.caseHot == 1}}">
+              <text class="star">★</text>
+              </block>
+              <block wx:if="{{item.caseHot == 2}}">
+              <text class="star">★★</text>
+              </block>
+              <block wx:if="{{item.caseHot == 3}}">
+              <text class="star">★★★</text>
+              </block>
+              <block wx:if="{{item.caseHot == 4}}">
+              <text class="star">★★★★</text>
+              </block>
+              <block wx:if="{{item.caseHot == 5}}">
+              <text class="star">★★★★★</text>
+              </block>
+              </view>
               <text class="case-price">￥{{item.casePrice}}.0</text>
             </view>
             <view class="button-wrap">
@@ -47,8 +68,8 @@
         <view class="order-case-item">
           <view class="order-title-wrapper">
             <text class="order-title">· {{item.caseName}}</text>
-<block wx:if="{{item.properties != null}}">
-            <text class="order-properties">({{item.properties}})</text>
+            <block wx:if="{{item.properties != null}}">
+              <text class="order-properties">({{item.properties}})</text>
             </block>
           </view>
           <text class="order-price">{{item.casePrice*item.orderNum}}￥</text>

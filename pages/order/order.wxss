@@ -116,11 +116,14 @@ page {
 .case-ordered {
   width: auto;
   height: auto;
-  color: #a3a3a3;
-  font-size: 12px;
   left: 0px;
   bottom: 25px;
   position: absolute;
+}
+
+.star{
+font-size: 13px;
+color: #FFCE43;
 }
 
 .case-price {
@@ -280,7 +283,7 @@ page {
   width: 100%;
   height: 100%;
   color: #fff;
-  background-color: #A4A4A4;
+  background-color: #a4a4a4;
   text-align: center;
   line-height: 50px;
   font-size: 18px;
@@ -329,14 +332,14 @@ page {
   background-color: #fff;
 }
 
-.order-title-wrapper{
+.order-title-wrapper {
   display: flex;
-    flex-direction: column;
+  flex-direction: column;
   /*align-items: center;*/
   justify-content: center;
-width: 150px;
-height: 100%;
-margin-left: 10px;
+  width: 150px;
+  height: 100%;
+  margin-left: 10px;
 }
 
 .order-title {
@@ -344,11 +347,11 @@ margin-left: 10px;
   font-size: 15px;
 }
 
-.order-properties{
+.order-properties {
   margin-top: 3px;
-width: 150px;
+  width: 150px;
   font-size: 10px;
-  color:#a4a4a4;
+  color: #a4a4a4;
   margin-left: 10px;
 }
 
@@ -357,5 +360,4 @@ width: 150px;
   color: #ff5e24;
   font-size: 15px;
 }
-
 @import "../../template/standardTip/standardTip.wxss"

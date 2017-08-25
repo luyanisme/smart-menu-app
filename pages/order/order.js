@@ -16,7 +16,7 @@ Page({
     orderTotalNum: app.globalData.totalOrderNums,
     totalPrice: app.globalData.totalPrice,
     isShowDetail: isShowDetail,
-    isNothing:true
+    isNothing:true,
   },
   onLoad: function (options) {
     wx.setNavigationBarTitle({ title: 'XX餐厅' });
@@ -92,6 +92,11 @@ Page({
     // 	complete: function () {
     // 		// complete  
     // 	}
+    // })
+    // $wuxRater.init('index', {
+    //   value: 3,
+    //   fontSize: 13,
+    //   disabled: !0,
     // })
   },
 
@@ -517,7 +522,7 @@ Page({
       })
     } else{
       wx.navigateTo({
-        url: '../pay/pay'
+        url: '../orders/orders'
       })
       app.globalData.isFromMenu = false;
     }

@@ -38,7 +38,7 @@ App({
   globalData: {
     userInfo: null,
     shopId: 1,
-    deskId: 11,
+    deskId: 1,
     orders: [],
     totalOrderNums: 0,
     totalPrice: 0,
