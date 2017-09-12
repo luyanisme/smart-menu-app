@@ -143,7 +143,7 @@ Page({
     });
     wx.onSocketMessage(function (data) {
       var result = JSON.parse(data.data);
-      if (result.statue == 0) {
+      if (result.status == 0) {
         wx.hideLoading();
         app.reStore();
         $wuxToptips.success({
@@ -153,7 +153,7 @@ Page({
             delta: app.globalData.isFromMenu ? 1 : 2
           }))
         })
-      } else if (result.statue == 1) {
+      } else if (result.status == 1) {
         wx.hideLoading();
         $wuxToptips.show({
           timer: 3000,

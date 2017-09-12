@@ -1,5 +1,7 @@
 
 var screen = require('../../utils/screenUtil.js');
+var config = require('../../utils/config.js')
+
 import { $wuxDialog } from '../../components/wux'
 import { $wuxToptips } from '../../components/wux'
 
@@ -28,7 +30,8 @@ var banners = [
 Page({
 
   data: {
-    severIp: 'http://' + app.globalData.server + '8080/',
+    // severIp: 'http://' + app.globalData.server + '8080/',
+    severIp: app.globalData.server+'/',
     winHeight: screen.getScreenSize().height,
   },
 
@@ -38,7 +41,8 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMainData?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      // url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMainData?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: app.globalData.server+'/Api/Wechat/getMainData?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响 
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
@@ -58,8 +62,12 @@ Page({
       }
     })
     // 生命周期函数--监听页面加载
+    // wx.connectSocket({
+    //   url: 'ws://'+ app.globalData.server +'8181',
+    // })
+
     wx.connectSocket({
-      url: "ws://localhost:8181",
+      url: config.wss,
     })
 
     //连接成功
@@ -128,7 +136,7 @@ Page({
           noticeType:0,
           shopId: app.globalData.shopId,
           deskId: app.globalData.deskId,
-          deskNum: '11号桌',
+          deskNum: '1号桌',
           noticeContent: value,
           noticeIsDealed: false
         };
@@ -137,13 +145,13 @@ Page({
         });
         wx.onSocketMessage(function (data) {
           var result = JSON.parse(data.data);
-          if (result.statue == 0){
+          if (result.status == 0){
             wx.hideLoading();
             $wuxToptips.success({
               hidden: !0,
               text: result.msg,
             })
-          } else if (result.statue == 1){
+          } else if (result.status == 1){
             wx.hideLoading();
             $wuxToptips.show({
               timer: 3000,

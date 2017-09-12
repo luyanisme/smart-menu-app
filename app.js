@@ -1,4 +1,5 @@
 //app.js
+var config = require('/utils/config.js')
 
 App({
   onLaunch: function () {
@@ -37,15 +38,16 @@ App({
 
   globalData: {
     userInfo: null,
-    shopId: 1,
-    deskId: 1,
+    shopInfo:null,
+    shopId: null,
+    deskId: null,
     orders: [],
     totalOrderNums: 0,
     totalPrice: 0,
     categories: [],
     originalCategories: null,
     selectRow: 0,
-    server: '127.0.0.1:',
+    server: config.http,
     postHtml: '',
     isLoaded: false,
     ordered: [],

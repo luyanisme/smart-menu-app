@@ -64,7 +64,7 @@ Page({
         method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
         // header: {}, // 设置请求的 header  
         success: function (res) {
-          if (res.data.statue == 0) {
+          if (res.data.status == 0) {
             app.globalData.categories = res.data.data;
             app.globalData.categories[0].selected = true;
             page.setData({

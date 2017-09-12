@@ -70,12 +70,36 @@ Page({
 
       success: function (res) {
         console.log(res);
+        //json格式
+        // {
+        //   "shopId": "1",
+        //     "deskId": "1"
+        // }
         var result = JSON.parse(res.result);
         app.globalData.shopId = result.shopId;
         app.globalData.deskId = result.deskId;
-        var url = '../menu/menu';
-        wx.navigateTo({
-          url: url
+        wx.showLoading({
+          title: '加载中',
+        })
+        wx.request({
+          url: app.globalData.server + '/Api/Wechat/getShopInfo?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响 
+          data: {},
+          method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
+          // header: {}, // 设置请求的 header  
+          success: function (res) {
+            app.globalData.shopInfo = res.data.data,
+            wx.hideLoading();
+            var url = '../menu/menu';
+            wx.navigateTo({
+              url: url
+            })
+          },
+          fail: function () {
+            // fail  
+          },
+          complete: function () {
+            // complete  
+          }
         })
       },
 

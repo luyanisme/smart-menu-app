@@ -20,12 +20,12 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getOrdered?shopId=' + app.globalData.shopId + '&deskId=' + app.globalData.deskId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: app.globalData.server + '/Api/Wechat/getOrdered?shopId=' + app.globalData.shopId + '&deskId=' + app.globalData.deskId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
       success: function (res) {
-        if (res.data.statue == 0) {
+        if (res.data.status == 0) {
           that.setData({
             totalOrders: res.data.data.ordered,
             totalPrice: res.data.data.totalPrice,
@@ -106,13 +106,13 @@ Page({
     });
     wx.onSocketMessage(function (data) {
       var result = JSON.parse(data.data);
-      if (result.statue == 0) {
+      if (result.status == 0) {
         wx.hideLoading();
         $wuxToptips.success({
           hidden: !0,
           text: result.msg,
         })
-      } else if (result.statue == 1) {
+      } else if (result.status == 1) {
         wx.hideLoading();
         $wuxToptips.show({
           timer: 3000,

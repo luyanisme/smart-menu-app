@@ -20,12 +20,12 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getOrdered?shopId=' + app.globalData.shopId + '&deskId=' + app.globalData.deskId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url:app.globalData.server + '/Api/Wechat/getOrdered?shopId=' + app.globalData.shopId + '&deskId=' + app.globalData.deskId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
       success: function (res) {
-        if (res.data.statue == 0) {
+        if (res.data.status == 0) {
           wx.hideLoading();
           if (res.data.data == null){
             $wuxToptips.success({
@@ -109,8 +109,8 @@ Page({
       noticeType: 0,
       shopId: app.globalData.shopId,
       deskId: app.globalData.deskId,
-      deskNum: '11号桌',
-      noticeContent: '11号桌买单',
+      deskNum: '1号桌',
+      noticeContent: '1号桌买单',
       noticeIsDealed: false
     };
     wx.sendSocketMessage({
@@ -118,14 +118,14 @@ Page({
     });
     wx.onSocketMessage(function (data) {
       var result = JSON.parse(data.data);
-      if (result.statue == 0) {
+      if (result.status == 0) {
         wx.hideLoading();
         $wuxToptips.success({
           hidden: !0,
           text: result.msg,
           success: () => wx.navigateBack()
         })
-      } else if (result.statue == 1) {
+      } else if (result.status == 1) {
         wx.hideLoading();
         $wuxToptips.show({
           timer: 3000,

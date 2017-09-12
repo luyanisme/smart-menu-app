@@ -11,7 +11,7 @@ import { $wuxToptips } from '../../components/wux'
 Page({
 
   data: {
-    severIp: 'http://' + app.globalData.server + '8080/',
+    severIp: app.globalData.server + '/',
     winHeight: screen.getScreenSize().height - 50,
     orderTotalNum: app.globalData.totalOrderNums,
     totalPrice: app.globalData.totalPrice,
@@ -19,7 +19,7 @@ Page({
     isNothing:true,
   },
   onLoad: function (options) {
-    wx.setNavigationBarTitle({ title: 'XX餐厅' });
+    wx.setNavigationBarTitle({ title: app.globalData.shopInfo.shopName });
     if (app.globalData.isLoaded == true) {
       this.setData({
         specialCaseId: options.caseId
@@ -34,12 +34,12 @@ Page({
     totalPrice = 0;
     var page = this;
     wx.request({
-      url: 'http://' + app.globalData.server + '8080/Api/Wechat/getMenu?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: app.globalData.server + '/Api/Wechat/getMenu?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
       success: function (res) {
-        if (res.data.statue == 0) {
+        if (res.data.status == 0) {
           app.globalData.categories = res.data.data;
           app.globalData.originalCategories = JSON.stringify(res.data.data);
           app.globalData.categories[0].selected = true;
