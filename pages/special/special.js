@@ -31,20 +31,24 @@ var specialCases = [
     casePrice: '123.00'
   },
 ];
+
+import { $wuxToptips } from '../../components/wux'
+var app = getApp();
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    cases: specialCases
+    // cases: specialCases
+    severIp: app.globalData.server + '/',
   },
 
   onTapChooseBuy: function (e) {
     var index = e.target.dataset.index;
-    console.log(specialCases[index].caseName);
     wx.navigateTo({
-      url: '../order/order?caseId=' + specialCases[index].caseId
+      url: '../order/order?caseId=' + this.data.cases[index].caseId
     })
   },
 
@@ -52,7 +56,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    wx.setNavigationBarTitle({ title: app.globalData.shopInfo.shopName });
+    wx.showLoading({
+      title: '加载中',
+    })
+    var page = this;
+    wx.request({
+      url: app.globalData.server + app.globalData.suffix + 'getSpecialCases?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      data: {},
+      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
+      // header: {}, // 设置请求的 header  
+      success: function (res) {
+        if (res.data.status == 0) {
+          var cases = res.data.data[0].cases;
+          page.setData({
+            cases: cases,
+          });
+          wx.hideLoading();
+        }
+      },
+      fail: function () {
+        // fail  
+      },
+      complete: function () {
+        // complete  
+      }
+    })
   },
 
   /**

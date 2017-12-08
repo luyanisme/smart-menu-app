@@ -132,7 +132,8 @@ right: 10px;
 }
 
 .add-cart-tip {
-  width: auto;
+  text-align: center;
+  width: 60px;
   height: 25px;
   line-height: 25px;
   font-size: 11px;

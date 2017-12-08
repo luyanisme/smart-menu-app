@@ -1,10 +1,35 @@
-<!--index.wxml-->
-<view class="container">
-  <view  bindtap="bindViewTap" class="userinfo">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+<import src="../../components/dialog/dialog.wxml"/>
+<import src="../../components/toptips/toptips.wxml"/>
+<template is="dialog" data="{{ ...$wux.dialog }}"/>
+<template is="toptips" data="{{ ...$wux.toptips }}"/>
+<view class="wrapper">
+<scroll-view style="height: {{winHeight}}px" scroll-y="true">
+  <view class="banner-wrap">
+    <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="500">
+      <block wx:for="{{posts}}" wx:key="id">
+        <swiper-item>
+          <image catchtap="tapPost" data-id="{{index}}" src="{{severIp+item.postImagePath}}" mode="widthFix"/>
+        </swiper-item>
+      </block>
+    </swiper>
+    <image catchtap="onTapCall" class="call-btn" src="../../icons/call_icon.png" mode="aspectFit"></image>
+    <view catchtap="onTapOrder" class="order-btn">
+    <image src="../../icons/order_icon.png" mode="aspectFit"></image>
+    <text class="order-num {{ordersNum == 0 ? 'hidden':''}}">{{ordersNum}}</text>
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class="cate-wrapper">
+    <block wx:for-items="{{funcs}}" wx:key="id">
+      <view catchtap="onTapCate" data-index="{{index}}" class="cate-item">
+        <view class="icon_wrapper">
+        <image src="{{severIp+item.funcIconPath}}" mode="aspectFill"></image>
+        <text class="cate-title">{{item.funcName}}</text>
+        <!--<text class="case-num">(10)</text>-->
+        </view>
+        <view class="h_bottom_line"></view>
+        <view class="v_right_line"></view>
+      </view>
+    </block>
   </view>
+</scroll-view>
 </view>

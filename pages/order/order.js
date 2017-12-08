@@ -21,9 +21,15 @@ Page({
   onLoad: function (options) {
     wx.setNavigationBarTitle({ title: app.globalData.shopInfo.shopName });
     if (app.globalData.isLoaded == true) {
-      this.setData({
-        specialCaseId: options.caseId
-      });
+      if (options.caseId != null){
+        //需要将点击项归到第一项
+        app.globalData.categories[app.globalData.selectRow].selected = false;
+        app.globalData.selectRow = 0;
+        app.globalData.categories[0].selected = true;
+        this.setData({
+          specialCaseId: options.caseId,
+        });
+      }
       return;
     }
     wx.showLoading({
@@ -34,7 +40,7 @@ Page({
     totalPrice = 0;
     var page = this;
     wx.request({
-      url: app.globalData.server + '/Api/Wechat/getMenu?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: app.globalData.server + app.globalData.suffix + 'getMenu?shopId=' + app.globalData.shopId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
@@ -59,52 +65,10 @@ Page({
         // complete  
       }
     })
-    // wx.getStorage({
-    // 	key: 'data',
-    // 	success: function (res) {
-    // 		console.log(res.data)
-    // 		page.setData({
-    // 			list: res.data.list,
-    // 			category: res.data.list[row],
-    // 			orderTotalNum: res.data.orderTotalNum,
-    // 			totalPrice: res.data.totalPrice,
-    // 			isShowDetail: res.data.isShowDetail
-    // 		});
-    // 	}
-    // })
 
-    // wx.request({
-    // 	url: 'http://localhost:8080/getMenu',//上线的话必须是https，没有appId的本地请求貌似不受影响  
-    // 	data: {},
-    // 	method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
-    // 	// header: {}, // 设置请求的 header  
-    // 	success: function (res) {
-    // 		console.log(res.data)
-    // 		page.setData({
-    // 			list: res.data,
-    // 			category: res.data[row],
-
-    // 		});
-    // 	},
-    // 	fail: function () {
-    // 		// fail  
-    // 	},
-    // 	complete: function () {
-    // 		// complete  
-    // 	}
-    // })
-    // $wuxRater.init('index', {
-    //   value: 3,
-    //   fontSize: 13,
-    //   disabled: !0,
-    // })
   },
 
   onUnload: function () {
-    // wx.setStorage({
-    // 	key: "data",
-    // 	data: this.data
-    // })
     if (!app.globalData.isClear){
       app.globalData.orders = totalOrders;
       app.globalData.totalPrice = totalPrice;
@@ -127,7 +91,9 @@ Page({
       this.setData({
         isNothing: (app.globalData.totalOrderNums == 0 ? true : false)
       });
-    
+      if (app.globalData.selectRow != null){
+        row = app.globalData.selectRow;
+    }
     totalPrice = app.globalData.totalPrice;
     totalOrders = app.globalData.orders;
     this.setData({

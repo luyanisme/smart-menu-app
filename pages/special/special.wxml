@@ -2,7 +2,7 @@
 <scroll-view scroll-y="true">
 <block wx:key="caseId" wx:for-items="{{cases}}">
   <view class="case-item">
-    <image class="case-img" src="{{item.caseImagePath}}" style="{{index%2 == 0 ? 'left' : 'right'}}:20px" mode="aspectFit"></image>
+    <image class="case-img" src="{{severIp+item.caseImagePath}}" style="{{index%2 == 0 ? 'left' : 'right'}}:20px" mode="aspectFit"></image>
     <view class="case-info-wrapper" style="{{index%2 == 0 ? 'right' : 'left'}}: 20px;align-items: {{index%2 == 0 ? 'flex-end' : 'flex-start'}};">
       <text class="case-title">{{item.caseName}}</text>
       <text class="case-price">￥{{item.casePrice}}</text>

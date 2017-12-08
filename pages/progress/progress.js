@@ -20,16 +20,24 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: app.globalData.server + '/Api/Wechat/getOrdered?shopId=' + app.globalData.shopId + '&deskId=' + app.globalData.deskId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
+      url: app.globalData.server + app.globalData.suffix + 'getOrdered?shopId=' + app.globalData.shopId + '&deskId=' + app.globalData.deskId,//上线的话必须是https，没有appId的本地请求貌似不受影响  
       data: {},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT  
       // header: {}, // 设置请求的 header  
       success: function (res) {
         if (res.data.status == 0) {
-          that.setData({
-            totalOrders: res.data.data.ordered,
-            totalPrice: res.data.data.totalPrice,
-          })
+          if (res.data.data == null){
+            $wuxToptips.success({
+              hidden: !0,
+              text: res.data.msg,
+            })
+          } else{
+            that.setData({
+              totalOrders: res.data.data.ordered,
+              totalPrice: res.data.data.totalPrice,
+            })
+          }
+        
           wx.hideLoading();
         }
       },
